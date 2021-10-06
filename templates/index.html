@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Bank Management System</title>
+    <link rel="stylesheet" href="static/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>blood bank management system</h1>
+    <p>Would you like to</p>
+
+    <div class="container">
+        <a href="{{ url_for('donate') }}"><button class="child">donate blood</button></a>
+        <p class="child-p">or</p>
+        <a href="{{ url_for('ask') }}"><button class="child">request blood</button></a>
+    </div>
+    <p>blood 🩸?</p>
+</body>
+</html>
