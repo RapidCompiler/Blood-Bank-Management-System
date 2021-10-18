@@ -22,13 +22,12 @@ def index():
     return render_template('index.html')
     # Home page of the management system
 
-@app.route('/donate')
+@app.route('/donate', methods=['GET'])
 def donate():
     # return "Donate 👐"
     return render_template('donate.html')
-    # Code to write data into database here
 
-@app.route('/request')
+@app.route('/request', methods=['GET'])
 def ask():
     return render_template('request.html')
     # Code to read data from database here
