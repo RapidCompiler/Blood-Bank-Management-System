@@ -63,7 +63,7 @@ def req_process():
     
     # Code to interate through database results and send SMS to all prospective donors (in the same location)
     for i in x:
-        phone = i[0]
+        phone = "+91" + i[0]
         blood_polarity = "+" if request.form.get("blood_polarity") else "-"
         message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood in your locality"
         print
