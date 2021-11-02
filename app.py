@@ -44,6 +44,14 @@ def donate():
 def ask():
     return render_template('request.html')
 
+@app.route('/view_request', methods=["GET"])
+def view_request():
+    processing = [["Sanjay", "Suresh", 2345689, 3245346], ["Sanjay", "Suresh", 2345689, 3245346]] # Write query here to retrieve requests that are currently being processed
+    completed = [] # Write query here to retrieve requests that are completed
+    requests={"processing": processing, "completed": completed}
+    print(requests)
+    return render_template('request-view.html', requests=requests)
+
 @app.route('/req_process', methods=['POST'])
 def req_process():
     # Parsing sex and blood polarity from form
