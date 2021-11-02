@@ -46,6 +46,10 @@ def ask():
 
 @app.route('/view_request', methods=["GET"])
 def view_request():
+    if request["method"] == "POST":
+        # Write query here to change the status of request to COMPLETED
+        pass
+
     processing = [["Sanjay", "Suresh", 2345689, 3245346], ["Sanjay", "Suresh", 2345689, 3245346]] # Write query here to retrieve requests that are currently being processed
     completed = [] # Write query here to retrieve requests that are completed
     requests={"processing": processing, "completed": completed}
