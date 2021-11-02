@@ -44,9 +44,9 @@ def donate():
 def ask():
     return render_template('request.html')
 
-@app.route('/view_request', methods=["GET"])
+@app.route('/view_request', methods=["GET", "POST"])
 def view_request():
-    if request["method"] == "POST":
+    if request.method == "POST":
         # Write query here to change the status of request to COMPLETED
         pass
 
