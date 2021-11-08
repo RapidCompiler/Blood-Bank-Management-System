@@ -21,8 +21,28 @@
               </select>
         </div>
         <div class="container">
-            <input type="text" maxlength="20" name="city" placeholder="City" required/>
-            <input type="text" maxlength="20" name="locality" placeholder="Locality" required/>
+            <label for="locality">Choose your Locality</label>
+            <select name="local" id="local" required>
+                <option selected disabled>Select a Locality</option>
+                {% for local in message['local']%}
+                <option value="{{local}}">{{local}}</option>
+                {% endfor %}
+            </select>
+            <label for="city">Choose your City</label>
+            <select name="city" id="city" required>
+                <option selected disabled>Select a City</option>
+                {% for city in message['city']%}
+                <option value="{{city}}">{{city}}</option>
+                {% endfor %}
+            </select><br>
+            <label for="pin">Choose the PinCode</label>
+            <select name="pin" id="pin" required>
+                <option selected disabled>Select a PinCode</option>
+                {% for pin in message['pin']%}
+                <option value="{{pin}}">{{pin}}</option>
+                {% endfor %}
+              </select>
+
         </div>
         <div class="container">
             <input type="number" name="phone" placeholder="Phone Number" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)" />
@@ -50,12 +70,15 @@
                 <option value="minus">-</option>
             </select>
         </div>
-        <p>HOSPITAL DETAILS:</p>
+        <p>SELECT THE HOSPITAL WHERE THE PATIENT IS ADMITTED:</p>
         <div class="container">
-            <input type="text" maxlength="20" name="hosp_name" placeholder="Name" required/>
-            <input type="text" maxlength="20" name="hosp_city" placeholder="City" required/>
-            <input type="text" maxlength="20" name="hosp_locality" placeholder="Locality" required/>
-            <input type="text" maxlength="20" name="hosp_pin" placeholder="Pin-Code" required/><br><br>
+            <select name="hosp" details="hosp" required>
+                <option selected disabled>Select a Hospital</option>
+                {% for hosp in message['hosp_list']%}
+                <option value="{{hosp}}">{{hosp}}</option>
+                {% endfor %}
+              </select>
+        </div>
 
         <button type="submit">Submit</button><br>
     </form>
