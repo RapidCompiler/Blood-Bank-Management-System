@@ -22,7 +22,7 @@
         </div>
         <div class="container">
             <label for="locality">Choose your Locality</label>
-            <select name="local" id="local" required>
+            <select name="locality" id="locality" required>
                 <option selected disabled>Select a Locality</option>
                 {% for local in message['local']%}
                 <option value="{{local}}">{{local}}</option>
@@ -64,16 +64,14 @@
             </select>
         </div>
         <div class="container">
-            <label for="verification">do you have verification?</label>
-            <select name="verification" id="verification" required>
-                <option value="yes">yes</option>
-                <option value="no" selected>no</option>
-              </select>
-        </div>
-        <div class="container">
             <label for="v_id">Enter Verification Number</label>
             <input name="v_id" placeholder="Verification ID">
         </div>
+        {% if message["error"] %}
+            <div class="error-text">
+                <p style="border-radius: 15px; background-color: rgba(255, 0, 0, 0.637); width: max-content; padding: 10px 10px 10px 10px;">{{ message["error"] }}</p>
+            </div>
+        {% endif %}
         <button type="submit">Submit</button>
     </form>
     <a href="{{ url_for('index') }}"><button>Go to home page</button></a>

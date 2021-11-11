@@ -1,6 +1,6 @@
 from logging import root
 import re
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 import os
@@ -50,7 +50,8 @@ def locality():
 @app.route('/donate', methods=['GET'])
 def donate():
     local,city,pin=locality()
-    return render_template('donate.html',message={'local':local,'city':city,'pin':pin})
+    error = session.get('error', "")
+    return render_template('donate.html',message={'local':local,'city':city,'pin':pin, "error": error})
 
 @app.route('/request', methods=['GET'])
 def ask():
@@ -65,13 +66,30 @@ def ask():
 @app.route('/view_request', methods=["GET", "POST"])
 def view_request():
     if request.method == "POST":
-        # Write query here to change the status of request to COMPLETED
-        pass
+        # query to change the status of request to COMPLETED
+        print(request.form.get('request_id'), request.form.get('donor'), request.form.get('hospital'))
+        query = f"update request set status = '1', hosp_id = '{request.form.get('hospital')}', donor_id = '{request.form.get('donor')}' where id = '{request.form.get('request_id')}'"
+        print(query)
+        cursor.execute(query)
+        conn.commit()
 
-    processing = [["Sanjay", "Suresh", 2345689, 3245346], ["Sanjay", "Suresh", 2345689, 3245346]] # Write query here to retrieve requests that are currently being processed
-    completed = [] # Write query here to retrieve requests that are completed
-    requests={"processing": processing, "completed": completed}
-    print(requests)
+    query = f"select id, first_name, last_name, phone, aadhar, blood_group, blood_polarity from request where status = '0'"
+    cursor.execute(query)
+    processing = cursor.fetchall()
+
+    query = f"select id, first_name, last_name, phone, aadhar, blood_group, blood_polarity from request where status = '1'"
+    cursor.execute(query)
+    completed = cursor.fetchall()
+ 
+    query = f"select v_id, first_name, last_name from donor"
+    cursor.execute(query)
+    donors = cursor.fetchall()
+
+    query = f"select hosp_id, hosp_name, hosp_locality from hospital_table"
+    cursor.execute(query)
+    hospitals = cursor.fetchall()
+
+    requests={"processing": processing, "completed": completed, "donors": donors, "hospitals": hospitals}
     return render_template('request-view.html', requests=requests)
 
 @app.route('/req_process', methods=['POST'])
@@ -101,72 +119,96 @@ def req_process():
         x=cursor.fetchall()
         print(x)
 
-        # print(drop_id)
-        
-        # Code to interate through database results and send SMS to all prospective donors (in the same location)
+        # Code to iterate through database results and send SMS to all prospective donors (in the same location)
         for i in x:
             phone = "+91" + i[0]
             blood_polarity = "+" if request.form.get("blood_polarity") else "-"
             message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood in your locality"
             # print
-            # client.publish(
-            #     PhoneNumber=phone,
-            #     Message=message
-            # )
+            client.publish(
+                PhoneNumber=phone,
+                Message=message
+            )
             print("Message sent", phone, message)
         
     return render_template('req_process.html')
 
 @app.route('/donate_otp', methods=["POST"])
 def donate_otp():
-#     phone = "+91" + request.form.get('phone')
-#     print(phone)
-#     # otp_dict = client.create_sms_sandbox_phone_number(
-#     #     PhoneNumber=phone,
-#     #     LanguageCode="en-GB"
-#     # )
+    query = f"select first_name, last_name, aadhar_id from donor_verification where v_id = {request.form.get('v_id')}"
+    print(query)
+    cursor.execute(query)
+    results = cursor.fetchall()
+    print(results)
+    # print("This is the length of the results : ", len(results))
+    # print(results[0], request.form.get('first_name'))
+    # print(results[0], request.form.get('last_name'))
+    # print(results[0], request.form.get('aadhar'))
+    if len(results) == 0:
+        session["error"] = "Donor not found"
     
-#     session["sex"] = request.form.get('sex')[0]
-#     session['blood_polarity'] = request.form.get('blood_polarity'),
-#     session["first_name"] = request.form.get('first_name'),
-#     session['last_name'] = request.form.get('last_name')
-#     session['city'] = request.form.get('city')
-#     session['locality'] = request.form.get('locality')
-#     session['phone'] = request.form.get('phone')
-#     session['aadhar'] = request.form.get('aadhar')
-#     session['blood_group'] = request.form.get('blood_group')
-#     session['verification'] = request.form.get('verification')
+        return redirect('/donate')
+    elif results[0][0].lower() != request.form.get('first_name'):
+        session["error"] = "First name does not match"
+        return redirect('/donate')
 
-#     print(session.get('phone', None))
+    elif results[0][1].lower() != request.form.get('last_name'):
+        session["error"] = "Last name does not match"
+        return redirect('/donate')
 
+    elif results[0][2].lower() != request.form.get('aadhar'):
+        session["error"] = "Aadhar Number does not match"
+        return redirect('/donate')
+
+    phone = "+91" + request.form.get('phone')
+    print(phone)
+    otp_dict = client.create_sms_sandbox_phone_number(
+        PhoneNumber=phone,
+        LanguageCode="en-GB"
+    )
+    print(otp_dict)
+    session.pop('error', None)
+
+    print("this is the error after it is popped", session.get('error', None))
+    print(request.form.get('locality'))
+
+    session["sex"] = request.form.get('sex')[0]
+    session['blood_polarity'] = request.form.get('blood_polarity'),
+    session["first_name"] = request.form.get('first_name'),
+    session['last_name'] = request.form.get('last_name')
+    session['city'] = request.form.get('city')
+    session['locality'] = request.form.get('locality')
+    session['phone'] = request.form.get('phone')
+    session['aadhar'] = request.form.get('aadhar')
+    session['blood_group'] = request.form.get('blood_group')
+    session['v_id'] = request.form.get('v_id')
     return render_template('otp.html')
 
 @app.route('/donate_success', methods=['POST'])
 def donate_success():
-    # print(session.get('first_name', None))
-    # print(session.get('last_name', None))
-    # print(session.get('city', None))
-    # print(session.get('locality', None))
-    # print(session.get('phone', None))
-    # print(session.get('aadhar', None))
+    print(session.get('first_name', None))
+    print(session.get('last_name', None))
+    print(session.get('city', None))
+    print(session.get('locality', None))
+    print(session.get('phone', None))
+    print(session.get('aadhar', None))
 
-    # verify_sandbox = client.verify_sms_sandbox_phone_number(
-    #     PhoneNumber="+91" + session.get('phone'),
-    #     OneTimePassword=request.form.get('otp')
-    # )
+    verify_sandbox = client.verify_sms_sandbox_phone_number(
+        PhoneNumber="+91" + session.get('phone'),
+        OneTimePassword=request.form.get('otp')
+    )
+
+    print("This is sandbox verification : ", verify_sandbox)
 
     sex = session.get('sex', None)[0]
     blood_polarity = 1 if session.get('blood_polarity', None)[0] == "plus" else 0
-    verification = 1 if session.get('verification', None)[0] == "yes" else 0
-    v_id=request.form.get('v_id')
-    query="SELECT first_name,last_name,aadhar_id FROM donor_verification WHERE v_id=v_id" ##error_handling
+    verification = 1 if session.get('v_id', None)[0] == "yes" else 0
+    v_id = session.get('v_id', None)
+    query = 'INSERT INTO DONOR VALUES ("' + session.get('first_name', None)[0].title() + '", "' + session.get('last_name', None).title() + '", "' + sex + '", "' + session.get('city', None).title() + '", "' + session.get('locality', None).title() + '", "' + session.get('phone', None) + '", "' + session.get('aadhar', None) + '", "' + session.get('blood_group', None) + '", "' + str(blood_polarity) + '", "' +  str(v_id) + '","' + str(verification) + '")'
+    print(query)
     cursor.execute(query)
-    x=cursor.fetchone()
-    if(x[0].strip()==request.form.get('first_name').title().strip()) and x[1].strip()==request.form.get('last_name').title().strip() and x[2]==request.form.get('aadhar'):
-        query = 'INSERT INTO DONOR VALUES ("' + session.get('first_name', None)[0].title() + '", "' + session.get('last_name', None).title() + '", "' + sex + '", "' + session.get('city', None).title() + '", "' + session.get('locality', None).title() + '", "' + session.get('phone', None) + '", "' + session.get('aadhar', None) + '", "' + session.get('blood_group', None) + '", "' + str(blood_polarity) + '", ' + verification + ',' + str(v_id) + ')'
-        cursor.execute(query)
-        conn.commit()
+    conn.commit()
     return render_template('success.html')
     
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug = True, port = 5001)

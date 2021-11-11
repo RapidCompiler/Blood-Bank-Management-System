@@ -71,11 +71,11 @@
           max-width: 300px;
           padding: 10px;
           background-color: white;
-          z-index: 9; 
+          z-index: 9;
         }
         
         /* Full-width input fields */
-        .form-container input[type=text], .form-container input[type=password] {
+        select, option, .form-container input[type=text], .form-container input[type=password] {
           width: 100%;
           padding: 15px;
           margin: 5px 0 22px 0;
@@ -134,10 +134,13 @@
         <h3>REQUESTS BEING PROCESSED</h3>
         <table>
           <tr>
+            <th>Request ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Phone Number</th>
             <th>Aadhar Number</th>
+            <th>Blood Group</th>
+            <th>Blood Polarity</th>
             <th>change Status</th>
           </tr>
           {% for i in requests["processing"] %}
@@ -146,6 +149,9 @@
             <th>{{ i[1] }}</th>
             <th>{{ i[2] }}</th>
             <th>{{ i[3] }}</th>
+            <th>{{ i[4] }}</th>
+            <th>{{ i[5] }}</th>
+            <th>{{ '+' if i[6] == '1' else '-' }}</th>
             <th><button class="open-button" onclick="openForm('{{i[0]}}')">Complete </button></th>
           </tr>
           {% endfor %}
@@ -154,32 +160,48 @@
         <h3>REQUESTS COMPLETED</h3>
         <table>
           <tr>
+            <th>Request ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Phone Number</th>
             <th>Aadhar Number</th>
+            <th>Blood Group</th>
+            <th>Blood Polarity</th>
           </tr>
-          {% for i in requests["processing"] %}
+          {% for i in requests["completed"] %}
           <tr>
             <th>{{ i[0] }}</th>
             <th>{{ i[1] }}</th>
             <th>{{ i[2] }}</th>
             <th>{{ i[3] }}</th>
+            <th>{{ i[4] }}</th>
+            <th>{{ i[5] }}</th>
+            <th>{{ i[6] }}</th>
           </tr>
           {% endfor %}
         </table>
         
         <div class="form-popup" id="myForm">
-          <form action="{{ url_for('view_request') }}" class="form-container">
-            <h1>Login</h1>
-            <input type="text" id="find-user" value="" disabled/>
-            <label for="email">Email</label>
-            <input type="text" placeholder="Enter Email" name="email" required>
-        
-            <label for="psw">Password</label>
-            <input type="password" placeholder="Enter Password" name="psw" required>
-        
-            <button type="submit" class="btn">Login</button>
+          <form action="{{ url_for('view_request') }}" method="POST" class="form-container">
+            <h1>MARK REQUEST AS COMPLETED</h1>
+            <label for="request_id">Request Id</label>
+            <input type="text" id="find-user" name="request_id" readonly required>
+            <label for="donor">Select Donor</label>
+            <select name="donor" id="donor" required>
+              <option value="" selected hidden disabled>Select a Donor</option>
+              {% for donor in requests['donors']%}
+              <option value="{{donor[0]}}">{{ donor[0] }} - {{ donor[1] }} {{ donor[2] }}</option>
+              {% endfor %}
+            </select>
+            
+            <select name="hospital" id="hospital" required>
+              <option value="" selected hidden disabled>Select a Hospital</option>
+              {% for hospital in requests['hospitals']%}
+              <option value="{{hospital[0]}}">{{ hospital[0] }} - {{ hospital[1] }} {{ hospital[2] }}</option>
+              {% endfor %}
+            </select>
+
+            <button type="submit" class="btn">Complete</button>
             <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
           </form>
           <div class="modal-bg"></div>
