@@ -25,7 +25,7 @@
             <select name="local" id="local" required>
                 <option selected disabled>Select a Locality</option>
                 {% for local in message['local']%}
-                <option value="{{local}}">{{local}}</option>
+                <option value="{{local[0]}}">{{ local[0] }} - {{ local[1] }}</option>
                 {% endfor %}
             </select>
             <label for="city">Choose your City</label>
@@ -35,14 +35,6 @@
                 <option value="{{city}}">{{city}}</option>
                 {% endfor %}
             </select><br>
-            <label for="pin">Choose the PinCode</label>
-            <select name="pin" id="pin" required>
-                <option selected disabled>Select a PinCode</option>
-                {% for pin in message['pin']%}
-                <option value="{{pin}}">{{pin}}</option>
-                {% endfor %}
-              </select>
-
         </div>
         <div class="container">
             <input type="number" name="phone" placeholder="Phone Number" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)" />
@@ -79,7 +71,11 @@
                 {% endfor %}
               </select>
         </div>
-
+        {% if message["error"] %}
+        <div class="error-text">
+            <p style="border-radius: 15px; background-color: rgba(255, 0, 0, 0.637); width: max-content; padding: 10px 10px 10px 10px;">{{ message["error"] }}</p>
+        </div>
+        {% endif %}
         <button type="submit">Submit</button><br>
     </form>
     <a href="{{ url_for('index') }}"><button>Go to home page</button></a>

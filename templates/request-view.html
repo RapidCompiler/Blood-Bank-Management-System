@@ -193,7 +193,7 @@
               <option value="{{donor[0]}}">{{ donor[0] }} - {{ donor[1] }} {{ donor[2] }}</option>
               {% endfor %}
             </select>
-            
+            <label for="hospital">Select hospital</label>
             <select name="hospital" id="hospital" required>
               <option value="" selected hidden disabled>Select a Hospital</option>
               {% for hospital in requests['hospitals']%}
@@ -216,6 +216,8 @@
         
         function closeForm() {
           document.getElementById("myForm").style.display = "none";
+          document.getElementById("hospital").value = "";
+          document.getElementById("donor").value = "";
         }
         </script>
 </body>
