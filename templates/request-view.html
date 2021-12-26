@@ -151,7 +151,7 @@
             <th>{{ i[3] }}</th>
             <th>{{ i[4] }}</th>
             <th>{{ i[5] }}</th>
-            <th>{{ '+' if i[6] == '1' else '-' }}</th>
+            <th>{{ '+' if i[6] == 1 else '-' }}</th>
             <th><button class="open-button" onclick="openForm('{{i[0]}}')">Complete </button></th>
           </tr>
           {% endfor %}
@@ -176,7 +176,7 @@
             <th>{{ i[3] }}</th>
             <th>{{ i[4] }}</th>
             <th>{{ i[5] }}</th>
-            <th>{{ i[6] }}</th>
+            <th>{{ '+' if i[6] == 1 else '-' }}</th>
           </tr>
           {% endfor %}
         </table>
