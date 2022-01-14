@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ message['user'] }} Profile</title>
+    <link rel="stylesheet" href="/static/form.css">
+</head>
+<body>
+    <h2>{{ message['user'] }} Profile</h2>
+    <p>{{ message['user'] }} ID: {{ message['id'] }}</p>
+    <p>{{ message['user'] }} Name: {{ message['name'] }}</p>
+    {% if message['user'] == 'hospital' %}
+    <p>{{ message['user'] }} City: {{ message['city'] }}</p>
+    <p>{{ message['user'] }} Locality: {{ message['locality'] }}</p>
+    {% endif %}
+    <a href="{{ url_for('index', user = message['user']) }}"><button>Go to home page</button></a>
+</body>
+</html>

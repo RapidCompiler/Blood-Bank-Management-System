@@ -12,8 +12,19 @@
 </head>
 <body>
     <h1>blood bank management system</h1>
-    <p>Would you like to</p>
+    {% if session.get('doctor_logged_in', None) or session.get('hospital_logged_in', None) %}
+    <p>{{ message['user'] }} dashboard</p>
+    <div class="container">
+        <a href="{{ url_for( 'profile', user = message['user'] ) }}"><button class="child">Profile</button></a>
+        <form action="/logout/{{ message['user'] }}" method="POST">
+            <button type="submit" class="child">Logout</button>
+        </form>
 
+    </div>
+    {% endif %}
+    
+    {% if not session.get('doctor_logged_in', None) and not session.get('hospital_logged_in', None) %}
+    <p>Would you like to</p>
     <div class="container">
         <a href="{{ url_for('donate') }}"><button class="child">donate</button></a>
         <p class="child-p">or</p>
@@ -21,7 +32,25 @@
     </div>
     <p>blood 🩸?</p>
     
-    <p style="padding-top: 80px;">View all requests</p>
-    <a href="{{ url_for('view_request') }}"><button class="child">View Requests</button></a>
+    <p style="text-align: center; padding-top: 80px;">Login</p>
+    <div class="container">
+        <a href="{{ url_for('doctor_login_page') }}"><button class="child">Doctors</button></a>
+        <p class="child-p">or</p>
+        <a href="{{ url_for('hospital_login_page') }}"><button class="child">Hospitals</button></a>
+    </div>
+    {% endif %}
+
+    {% if session.get('doctor_logged_in', None) %}
+    <div class="container" style="padding-top: 80px;">
+        <a href="{{ url_for('donor_verification') }}"><button class="child">Verify Donors</button></a>
+    </div>
+    {% endif %}
+
+    {% if session.get('hospital_logged_in', None) %}
+    <div class="container" style="padding-top: 80px;">
+        <a href="{{ url_for('view_request') }}"><button class="child">View all Requests</button></a>
+        <a href="#"><button class="child">Verify Recipients</button></a>
+    </div>
+    {% endif %}
 </body>
 </html>
