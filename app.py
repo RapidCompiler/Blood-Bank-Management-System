@@ -2,20 +2,26 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 import os
-import boto3
+# import boto3
+from twilio.rest import Client
 import bcrypt
 
 load_dotenv()
 
 # Initializing connection to AWS SNS Client
-access_key = os.getenv('AWS_ACCESS_KEY_ID')
-secret_key = os.getenv('AWS_SECRET_ACCESS_KEY')
-client = boto3.client(
-    "sns",
-    aws_access_key_id=access_key,
-    aws_secret_access_key=secret_key,
-    region_name="us-east-1"
-)
+account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+messaging_service_id = os.getenv('TWILIO_MESSAGING_SID')
+auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+
+client = Client(account_sid, auth_token)
+# access_key = os.getenv('AWS_ACCESS_KEY_ID')
+# secret_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+# client = boto3.client(
+#     "sns",
+#     aws_access_key_id=access_key,
+#     aws_secret_access_key=secret_key,
+#     region_name="us-east-1"
+# )
 
 # Setting up flask and mysql connection parameters
 app = Flask(__name__)
@@ -34,6 +40,11 @@ cursor = conn.cursor()
 @app.route('/', methods=['GET'])
 @app.route('/<user>')
 def index(user = None):
+    if (user == "hospital" and session.get('doctor_logged_in', None)) or (user == "doctor" and session.get('hospital_logged_in', None)):
+        if user == "doctor":
+            return redirect(url_for('index', user='hospital'))
+        return redirect(url_for('index', user='doctor'))
+
     session.pop("error", None)
     return render_template('index.html', message={"user": user})
     
@@ -153,6 +164,12 @@ def req_process():
             #     Message=message
             # )
 
+            client.messages.create(
+                messaging_service_id = messaging_service_id,
+                body = message,
+                to = phone
+            )
+
             # print(publish)
             print("Message sent", phone, message)
     else:
@@ -235,6 +252,12 @@ def donor_verification():
 
 @app.route('/profile/<user>')
 def profile(user):
+    print(user, session.get('doctor_logged_in', None), session.get('hospital_logged_in', None))
+    if (user == "hospital" and session.get('doctor_logged_in', None)) or (user == "doctor" and session.get('hospital_logged_in', None)):
+        if user == "doctor":
+            return redirect(url_for('profile', user='hospital'))
+        return redirect(url_for('profile', user='doctor'))
+
     if session.get(f"{user}_logged_in", None):
         query = f"select * from {user}_table where id = '{session.get(f'{user}_id', None)}'"
         cursor.execute(query)
@@ -257,23 +280,16 @@ def profile(user):
             locality = locality[-1][0]
             return render_template('profile.html', message={"user": user, "id": id, "name": name, "city": city, "locality": locality})
     else:
-        return redirect(url_for(f'{user}_login'))
+        return redirect(url_for('login', user = user))
 
 
-@app.route('/login/doctor', methods=["GET"])
-def doctor_login_page():
-    if not session.get('doctor_logged_in', None):
-        error = session.get('doctor_login_error', "")
-        return render_template('doctor-login.html', message={"error": error})
+@app.route('/login/<user>', methods=["GET"])
+def login_page(user):
+    if not session.get(f'{user}_logged_in', None):
+        error = session.get(f'{user}_login_error', "")
+        return render_template(f'{user}-login.html', message={"error": error})
     else:
-        return redirect('/profile/doctor')
-
-
-@app.route('/login/hospital', methods=["GET"])
-def hospital_login_page():
-    error = session.get('hospital_login_error', "")
-    return render_template('hospital-login.html', message={"error": error})
-
+        return redirect(f'/profile/{user}')
 
 @app.route('/login/<user>', methods=["POST"])
 def login(user):

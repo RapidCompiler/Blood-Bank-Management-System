@@ -34,9 +34,9 @@
     
     <p style="text-align: center; padding-top: 80px;">Login</p>
     <div class="container">
-        <a href="{{ url_for('doctor_login_page') }}"><button class="child">Doctors</button></a>
+        <a href='{{ url_for("login_page", user = "doctor") }}''><button class="child">Doctors</button></a>
         <p class="child-p">or</p>
-        <a href="{{ url_for('hospital_login_page') }}"><button class="child">Hospitals</button></a>
+        <a href='{{ url_for("login_page", user = "hospital") }}'><button class="child">Hospitals</button></a>
     </div>
     {% endif %}
 
