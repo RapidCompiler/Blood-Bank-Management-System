@@ -83,29 +83,29 @@ def view_request():
     
     if request.method == "POST":
         # query to change the status of request to COMPLETED
-        print(request.form.get('request_id'), request.form.get('donor'), request.form.get('hospital'))
-        query = f"update request set req_status = 'COMPLETED', hosp_id = '{request.form.get('hospital')}', donor_id = {request.form.get('donor')} where id = {request.form.get('request_id')}"
+        print(request.form.get('request_id'), request.form.get('donor'), session.get('hospital_id', None))
+        query = f"update request set req_status = 'COMPLETED', hosp_id = '{session.get('hospital_id', None)}', donor_id = {request.form.get('donor')} where id = {request.form.get('request_id')}"
         print(query)
         cursor.execute(query)
         conn.commit()
 
-    query = f"select request.id, first_name, last_name, phone, aadhar_id, blood_group, blood_polarity from request left join request_verification on request.v_id=request_verification.v_id where req_status = 'PROCESSING';"
+    hosp_id = session.get('hospital_id', None)
+    print(hosp_id)
+
+    query = f"select request.id, first_name, last_name, phone, aadhar_id, blood_group, blood_polarity, issue from request left join request_verification on request.v_id=request_verification.v_id where req_status = 'PROCESSING' and hosp_id = {hosp_id};"
     cursor.execute(query)
     processing = cursor.fetchall()
 
-    query = f"select request.id, first_name, last_name, phone, aadhar_id, blood_group, blood_polarity, donor_id from request left join request_verification on request.v_id=request_verification.v_id where req_status = 'COMPLETED';"
+    query = f"select request.id, request_verification.first_name, request_verification.last_name, request.phone, request_verification.aadhar_id, request.blood_group, request.blood_polarity, request.issue, request.donor_id, donor_verification.first_name from request left join request_verification on request.v_id=request_verification.v_id left join donor on request.donor_id = donor.id left join donor_verification on donor.v_id = donor_verification.v_id where req_status = 'COMPLETED' and hosp_id = {hosp_id};"
     cursor.execute(query)
     completed = cursor.fetchall()
+    print(completed)
  
     query = f"select donor.id, first_name, last_name from donor left join donor_verification on donor.v_id=donor_verification.v_id"
     cursor.execute(query)
     donors = cursor.fetchall()
 
-    query = f"select hospital_table.id,hosp_name,locality_name from hospital_table left join locality on hospital_table.hosp_locality = locality.id;"
-    cursor.execute(query)
-    hospitals = cursor.fetchall()
-
-    requests={"processing": processing, "completed": completed, "donors": donors, "hospitals": hospitals}
+    requests={"processing": processing, "completed": completed, "donors": donors}
     print(requests)
     return render_template('request-view.html', requests=requests)
 
@@ -295,7 +295,7 @@ def login_page(user):
 def login(user):
     userid = request.form.get("userid")
     password = request.form.get("password")
-    query = f"select * from {user}_table where id = '{userid}'"
+    query = f"select * from {user}_table where id = {userid}"
     print(query)
     cursor.execute(query)
     results = cursor.fetchall()
@@ -308,7 +308,6 @@ def login(user):
         if pwhash == results[-1][-2]:
             session[f"{user}_logged_in"] = True
             session[f"{user}_id"] = userid
-            session[f"{user}_name"] = results[-1][-3]
             session.pop(f"{user}_login_error", None)
             print('came here')
             return redirect(f'/{user}')
@@ -323,7 +322,6 @@ def logout(user):
     print(session.get('hospital_logged_in', None), session.get('hospital_id', None), session.get('hospital_name', None))
     session.pop(f'{user}_logged_in', None)
     session.pop(f"{user}_id", None)
-    session.pop(f"{user}_name", None)
     print(session.get('hospital_logged_in', None), session.get('hospital_id', None), session.get('hospital_name', None))
     return redirect(url_for('index'))
 
