@@ -120,10 +120,10 @@ def req_process():
     print("This is the hospital data : ", hosp_data)
     hosp_id,b=hosp_data.split('.')
     hosp_name,hosp_locality,c=b.split(', ')
-    hosp_city,hosp_pin=c.split('- ')
+    hosp_city,hosp_pin=c.split(' - ')
     locality=request.form.get('local')
     v_id=request.form.get('v_id')
-    print(hosp_locality,hosp_pin)
+    print(c,hosp_locality,hosp_pin,hosp_city)
     print(locality)
     
     # checking request_verification table for existing recepient
@@ -134,10 +134,17 @@ def req_process():
     locality_id=x[0]
     query = f"SELECT first_name,last_name,aadhar_id FROM request_verification WHERE v_id={v_id}" ##error_handling
     cursor.execute(query)
+    y = cursor.fetchone()
+    query = f"select id from locality where locality_name = '{hosp_locality}'"
+    cursor.execute(query)
     x = cursor.fetchone()
-    print("This is x : ", x)
-    print(x[0].strip(), request.form.get('first_name').lower().strip())
-    if(x[0].strip().lower()==request.form.get('first_name').lower().strip()) and x[1].strip().lower()==request.form.get('last_name').lower().strip() and x[2].lower()==request.form.get('aadhar'):
+    hosp_locality_id=x[0]
+    query = f"select id from city where name ='{hosp_city}'"
+    cursor.execute(query)
+    x = cursor.fetchone()
+    hosp_city_id=x[0]
+    print(hosp_locality_id,hosp_city_id)
+    if(y[0].strip().lower()==request.form.get('first_name').lower().strip()) and y[1].strip().lower()==request.form.get('last_name').lower().strip() and y[2].lower()==request.form.get('aadhar'):
         session.pop("error", None)
         
         # Query to insert into request table in database
@@ -147,31 +154,41 @@ def req_process():
         conn.commit()
 
         # Query to read from donor table in database
-        query='SELECT phone FROM DONOR WHERE blood_group="' + request.form.get('blood_group') + '" AND blood_polarity="' + str(blood_polarity) +'" AND locality_id="' + str(locality_id) + '"'
+        query='SELECT phone FROM DONOR WHERE blood_group="' + request.form.get('blood_group') + '" AND blood_polarity="' + str(blood_polarity) +'" AND locality_id="' + str(hosp_locality_id) + '"'
         x=cursor.execute(query)
         x=cursor.fetchall()
-        print(x)
-
+        if len(x)>=5:
+            print("Enough donors in vicinity")
         # Code to iterate through database results and send SMS to all prospective donors (in the same location)
-        for i in x:
-            phone = "+91" + i[0]
-            print(phone, blood_polarity)
-            blood_polarity = "+" if request.form.get("blood_polarity") else "-"
-            message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood in your locality"
+            for i in x:
+                phone = "+91" + i[0]
+                print(phone, blood_polarity)
+                blood_polarity = "+" if request.form.get("blood_polarity") else "-"
+                message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood in the hospital "+ hosp_name + " at " + hosp_locality +"."
 
-            # publish = client.publish(
-            #     PhoneNumber=phone,
-            #     Message=message
-            # )
+                # publish = client.publish(
+                #     PhoneNumber=phone,
+                #     Message=message
+                # )
 
-            client.messages.create(
-                messaging_service_id = messaging_service_id,
-                body = message,
-                to = phone
-            )
+                client.messages.create(
+                    messaging_service_sid = messaging_service_id,
+                    body = message,
+                    to = phone
+                )
+                # print(publish)
+                print("Message sent", phone, message)
+        else:
+            print("Not enough so sent to all")
+            query=f"Select phone from donor left join locality on donor.locality_id=locality.id left join city on locality.c_id={hosp_city_id};"
+            x=cursor.execute(query)
+            x=cursor.fetchall()
+            for i in x:
+                phone = "+91" + i[0]
+                print(phone)
+                blood_polarity = "+" if request.form.get("blood_polarity") else "-"
+                message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood in the hospital "+ hosp_name + " at " + hosp_locality +"."
 
-            # print(publish)
-            print("Message sent", phone, message)
     else:
         session["error"] = "Recepient not found"
         return redirect('/request')
@@ -234,10 +251,29 @@ def donate_success():
     print(sex)
     blood_polarity = 1 if request.form.get('blood_polarity') == "plus" else 0
     v_id = request.form.get('v_id')
-    query = 'INSERT INTO DONOR(sex,phone,blood_group,blood_polarity,v_id,locality_id) VALUES ("' + sex + '", "' + request.form.get('phone') +'", "' + request.form.get('blood_group') + '", "' + str(blood_polarity) + '", "' +  str(v_id) + '","' + str(locality_id) + '")'
+    query = 'INSERT INTO DONOR(sex,phone,blood_group,blood_polarity,v_id,locality_id) VALUES ("' + sex + '", "' + request.form.get('phone') +'", "' + request.form.get('blood_group') + '", ' + str(blood_polarity) + ', "' +  str(v_id) + '","' + str(locality_id) + '")'
     print(query)
     cursor.execute(query)
     conn.commit()
+    query='SELECT request.hosp_id from request where req_status="PROCESSING" and request.locality_id=' + str(locality_id) + ' and request.blood_group="' +str(request.form.get('blood_group'))+ '" and request.blood_polarity= ' + str(blood_polarity) + ' ;'
+    print(query)
+    cursor.execute(query)
+    x=cursor.fetchone()
+    print(x[0])
+    phone = "+91" + request.form.get('phone')
+    print(phone, blood_polarity)
+    blood_polarity = "+" if request.form.get("blood_polarity") else "-"
+    query=f"select hospital_table.hosp_name, locality.locality_name from hospital_table left join locality on hospital_table.hosp_locality = locality.id where hospital_table.id = {x[0]};"
+    cursor.execute(query)
+    hosp_details=cursor.fetchone()
+    hosp_name,hosp_locality=hosp_details[0],hosp_details[1]
+    message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood in the hospital "+ hosp_name + " at " + hosp_locality +"."
+    client.messages.create(
+                messaging_service_sid = messaging_service_id,
+                body = message,
+                to = phone
+            )
+    print(message)
     return render_template('success.html')
 
 
