@@ -40,12 +40,19 @@ cursor = conn.cursor()
 @app.route('/', methods=['GET'])
 @app.route('/<user>')
 def index(user = None):
+    if user == None:
+        if session.get('doctor_logged_in', None):
+            user = "doctor"
+        elif session.get('hospital_logged_in', None):
+            user = "hospital"
+
     if (user == "hospital" and session.get('doctor_logged_in', None)) or (user == "doctor" and session.get('hospital_logged_in', None)):
         if user == "doctor":
             return redirect(url_for('index', user='hospital'))
         return redirect(url_for('index', user='doctor'))
 
     session.pop("error", None)
+
     return render_template('index.html', message={"user": user})
     
 
@@ -108,6 +115,26 @@ def view_request():
     requests={"processing": processing, "completed": completed, "donors": donors}
     print(requests)
     return render_template('request-view.html', requests=requests)
+
+
+@app.route('/view_donor', methods=["GET", "POST"])
+def view_donor():
+    if request.method == "POST":
+        # delete from donor_verification and donor tables
+        query = f"delete from donor where v_id = '{request.form.get('donor_id')}'"
+        print(query)
+        cursor.execute(query)
+        conn.commit()
+        query = f"delete from donor_verification where v_id = '{request.form.get('donor_id')}'"
+        print(query)
+        cursor.execute(query)
+        conn.commit()
+
+    query = f"select * from donor_verification where d_id = '{session.get('doctor_id')}'"
+    cursor.execute(query)
+    verified = cursor.fetchall()
+    requests = {"verified": verified}
+    return render_template('donor-view.html', requests=requests)
 
 
 @app.route('/req_process', methods=['POST'])
@@ -259,7 +286,7 @@ def donate_success():
     print(query)
     cursor.execute(query)
     x=cursor.fetchone()
-    print(x[0])
+    # print(x[0])
     phone = "+91" + request.form.get('phone')
     print(phone, blood_polarity)
     blood_polarity = "+" if request.form.get("blood_polarity") else "-"
@@ -277,10 +304,25 @@ def donate_success():
     return render_template('success.html')
 
 
-@app.route('/donor_verification', methods=["POST", "GET"])
-def donor_verification():
+@app.route('/verification/<user>', methods=["POST", "GET"])
+def verification(user):
+    print(user, len(user))
+
+    if request.method == "POST":
+        userType = "doctor" if user == "donor" else "hospital"
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        aadhar = request.form.get('aadhar')
+        d_id = session.get(f'{userType}_id')
+        query = f"insert into {user}_verification (first_name, last_name, aadhar_id, d_id) values ('{first_name}', '{last_name}', '{aadhar}', '{d_id}')"
+        print(query)
+        cursor.execute(query)
+        conn.commit()
+        return render_template('success.html')
+
+    user = "donor" if user == "doctor" else "request"
     if session.get("doctor_logged_in", None):
-        return render_template('donor-verification.html')
+        return render_template('verification.html', message={"user": user})
     else:
         print("inside donor_verification function")
         return redirect('login/doctor')
@@ -331,7 +373,7 @@ def login_page(user):
 def login(user):
     userid = request.form.get("userid")
     password = request.form.get("password")
-    query = f"select * from {user}_table where id = {userid}"
+    query = f"select * from {user}_table where id = '{userid}'"
     print(query)
     cursor.execute(query)
     results = cursor.fetchall()
@@ -344,6 +386,7 @@ def login(user):
         if pwhash == results[-1][-2]:
             session[f"{user}_logged_in"] = True
             session[f"{user}_id"] = userid
+            print(userid)
             session.pop(f"{user}_login_error", None)
             print('came here')
             return redirect(f'/{user}')

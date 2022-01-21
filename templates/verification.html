@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify {{ message['user'] }}</title>
+    <link rel="stylesheet" href="/static/form.css">
+</head>
+<body>
+    <p>Verify {{ message['user'] }}s</p>
+    <p>Please enter the following details</p>
+    <form action='{{ url_for("verification", user = message["user"]) }}' method="POST">
+        <div class="container">
+            <input name="first_name" placeholder="First Name" required/>
+            <input name="last_name" placeholder="Last Name" required/>
+        </div>
+        <div class="container">
+            <input type="number" name="aadhar" placeholder="Aadhar Number" maxlength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)" />
+        </div>
+        {% if message["error"] %}
+            <div class="error-text">
+                <p style="border-radius: 15px; background-color: rgba(255, 0, 0, 0.637); width: max-content; padding: 10px 10px 10px 10px;">{{ message["error"] }}</p>
+            </div>
+        {% endif %}
+        <button type="submit">Submit</button>
+    </form>
+    <a href="{{ url_for('index') }}"><button>Go to home page</button></a>
+</body>
+</html>

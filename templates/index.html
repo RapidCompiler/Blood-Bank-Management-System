@@ -42,14 +42,15 @@
 
     {% if session.get('doctor_logged_in', None) %}
     <div class="container" style="padding-top: 80px;">
-        <a href="{{ url_for('donor_verification') }}"><button class="child">Verify Donors</button></a>
+        <a href='{{ url_for("view_donor", user = "doctor") }}'><button class="child">View all Donors</button></a>
+        <a href='{{ url_for("verification", user = "doctor") }}'><button class="child">Verify Donors</button></a>
     </div>
     {% endif %}
 
     {% if session.get('hospital_logged_in', None) %}
     <div class="container" style="padding-top: 80px;">
         <a href="{{ url_for('view_request') }}"><button class="child">View all Requests</button></a>
-        <a href="#"><button class="child">Verify Recipients</button></a>
+        <a href='{{ url_for("verification", user = "hospital") }}'><button class="child">Verify Recipients</button></a>
     </div>
     {% endif %}
 </body>
