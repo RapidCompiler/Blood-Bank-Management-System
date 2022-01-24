@@ -287,20 +287,22 @@ def donate_success():
     cursor.execute(query)
     x=cursor.fetchone()
     # print(x[0])
-    phone = "+91" + request.form.get('phone')
-    print(phone, blood_polarity)
-    blood_polarity = "+" if request.form.get("blood_polarity") else "-"
-    query=f"select hospital_table.hosp_name, locality.locality_name from hospital_table left join locality on hospital_table.hosp_locality = locality.id where hospital_table.id = {x[0]};"
-    cursor.execute(query)
-    hosp_details=cursor.fetchone()
-    hosp_name,hosp_locality=hosp_details[0],hosp_details[1]
-    message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood in the hospital "+ hosp_name + " at " + hosp_locality +"."
-    client.messages.create(
-                messaging_service_sid = messaging_service_id,
-                body = message,
-                to = phone
-            )
-    print(message)
+    if x != None:
+        phone = "+91" + request.form.get('phone')
+        print(phone, blood_polarity)
+        blood_polarity = "+" if request.form.get("blood_polarity") else "-"
+        query=f"select hospital_table.hosp_name, locality.locality_name from hospital_table left join locality on hospital_table.hosp_locality = locality.id where hospital_table.id = {x[0]};"
+        cursor.execute(query)
+        hosp_details=cursor.fetchone()
+    
+        hosp_name,hosp_locality=hosp_details[0],hosp_details[1]
+        message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood in the hospital "+ hosp_name + " at " + hosp_locality +"."
+        client.messages.create(
+                    messaging_service_sid = messaging_service_id,
+                    body = message,
+                    to = phone
+                )
+        print(message)
     return render_template('success.html')
 
 
@@ -313,15 +315,16 @@ def verification(user):
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
         aadhar = request.form.get('aadhar')
-        d_id = session.get(f'{userType}_id')
-        query = f"insert into {user}_verification (first_name, last_name, aadhar_id, d_id) values ('{first_name}', '{last_name}', '{aadhar}', '{d_id}')"
+        another_id = session.get(f'{userType}_id')
+        which_id = "d_id" if user == "doctor" else "h_id"
+        query = f"insert into {user}_verification (first_name, last_name, aadhar_id, {which_id}) values ('{first_name}', '{last_name}', '{aadhar}', '{another_id}')"
         print(query)
         cursor.execute(query)
         conn.commit()
         return render_template('success.html')
 
     user = "donor" if user == "doctor" else "request"
-    if session.get("doctor_logged_in", None):
+    if session.get("doctor_logged_in", None) or session.get('hospital_logged_in', None):
         return render_template('verification.html', message={"user": user})
     else:
         print("inside donor_verification function")
