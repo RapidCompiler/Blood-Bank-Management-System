@@ -65,6 +65,14 @@ def locality():
     locality = [(i[0], i[1]) for i in cursor.fetchall()]    
     return(locality, city)
 
+def sendSMS(body, phone):
+    client.messages.create(
+        messaging_service_sid = messaging_service_id,
+        body = body,
+        to = phone
+    )
+    print("Message sent", phone, body)
+
 
 @app.route('/donate', methods=['GET'])
 def donate():
@@ -191,26 +199,16 @@ def req_process():
         x=cursor.fetchall()
         if len(x)>=5:
             print("Enough donors in vicinity")
-        # Code to iterate through database results and send SMS to all prospective donors (in the same location)
+            # Code to iterate through database results and send SMS to all prospective donors (in the same location)
             for i in x:
                 phone = "+91" + i[0]
                 print(phone, blood_polarity)
                 blood_polarity = "+" if request.form.get("blood_polarity") else "-"
                 message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood at "+ hosp_name + " hospital in " + hosp_locality +"."
+                sendSMS(message, phone)
 
-                # publish = client.publish(
-                #     PhoneNumber=phone,
-                #     Message=message
-                # )
-
-                client.messages.create(
-                    messaging_service_sid = messaging_service_id,
-                    body = message,
-                    to = phone
-                )
-                # print(publish)
-                print("Message sent", phone, message)
         else:
+            # Code to iterate through database results and send SMS to all prospective donors (in the same city)
             print("Not enough so sent to all")
             blood_sign = "+" if request.form.get("blood_polarity") == "plus" else "-"
             blood_polarity = 1 if request.form.get("blood_polarity") == "plus" else 0
@@ -224,14 +222,8 @@ def req_process():
                 phone = "+91" + i[0]
                 print(phone)
                 message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_sign + " blood at "+ hosp_name + " hospital in " + hosp_locality +"."
+                sendSMS(message, phone)
 
-                client.messages.create(
-                    messaging_service_sid = messaging_service_id,
-                    body = message,
-                    to = phone
-                )
-
-                print("Message sent", phone, message)
     else:
         session["error"] = "Recepient not found"
         return redirect('/request')
@@ -303,15 +295,11 @@ def donate_success():
         query=f"select hospital_table.hosp_name, locality.locality_name from hospital_table left join locality on hospital_table.hosp_locality = locality.id where hospital_table.id = {x[0]};"
         cursor.execute(query)
         hosp_details=cursor.fetchone()
-    
         hosp_name,hosp_locality=hosp_details[0],hosp_details[1]
+
         message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood in the hospital "+ hosp_name + " at " + hosp_locality +"."
-        client.messages.create(
-                    messaging_service_sid = messaging_service_id,
-                    body = message,
-                    to = phone
-                )
-        print(message)
+        sendSMS(message, phone)
+
     return render_template('success.html')
 
 
