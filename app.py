@@ -316,7 +316,7 @@ def verification(user):
         last_name = request.form.get('last_name')
         aadhar = request.form.get('aadhar')
         another_id = session.get(f'{userType}_id')
-        which_id = "d_id" if user == "doctor" else "h_id"
+        which_id = "d_id" if user == "donor" else "h_id"
         query = f"insert into {user}_verification (first_name, last_name, aadhar_id, {which_id}) values ('{first_name}', '{last_name}', '{aadhar}', '{another_id}')"
         print(query)
         cursor.execute(query)
