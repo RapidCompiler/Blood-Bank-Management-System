@@ -3,18 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Blood bank Management system</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ message['user'].title() }} Profile</title>
-    <link rel="stylesheet" href="/static/form.css">
+    <link rel="shortcut icon" href="https://cdn-icons.flaticon.com/png/128/603/premium/603227.png?token=exp=1642354175~hmac=6ebcfaf769c98b04a662e7aa3e48af82"/>
+    <!-- <title>{{ message['user'].title() }} Profile</title> -->
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i|Open+Sans:400,600,700,800" rel="stylesheet">
+    <link rel="stylesheet" href="/static/themefisher-fonts.min.css">
+    <link rel="stylesheet" href="/static/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/main.css">
+    <link id="color-changer" rel="stylesheet" href="/static/color-0.css">
 </head>
 <body>
-    <h2>{{ message['user'] }} Profile</h2>
-    <p>{{ message['user'] }} ID: {{ message['id'] }}</p>
-    <p>{{ message['user'] }} Name: {{ message['name'] }}</p>
-    {% if message['user'] == 'hospital' %}
-    <p>{{ message['user'] }} City: {{ message['city'] }}</p>
-    <p>{{ message['user'] }} Locality: {{ message['locality'] }}</p>
-    {% endif %}
-    <a href="{{ url_for('index', user = message['user']) }}"><button>Go to home page</button></a>
+    <main class = "site-wrapper">
+        <div class="pt-table">
+            <div class="pt-tablecell page-resume relative">
+                <div class="row">
+                    <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                        <div class="page-title text-center">
+                            <h2><span class="primary">{{ message['user'].title() }} Profile</span></h2>
+                            <!-- <p style="color :rgb(236, 154, 60); ">Blood donation is the most important social service to humankind. By donating we can give others a life support. Blood Donation&nbsp;at the right time can save millions of lifes all over the world every year. Join us in this noble service in saving lifes. Register yourself below!!</p> -->
+                        </div>
+                    </div>
+                </div> 
+                <!-- <h2>{{ message['user'] }} Profile</h2> -->
+                <!-- <div class="jty"> -->
+                    <h2 class="text-center">{{ message['user'] }} ID: {{ message['id'] }}</h2>
+                    <h2 class="text-center">{{ message['user'] }} Name: {{ message['name'] }}</h2>
+                    {% if message['user'] == 'hospital' %}
+                    <h2 class="text-center">{{ message['user'] }} City: {{ message['city'] }}</h2>
+                    <h2 class="text-center">{{ message['user'] }} Locality: {{ message['locality'] }}</h2>
+                    {% endif %}
+                <!-- </div> -->
+
+                <p></p>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="input-field button">
+                        <span class="btn-border">
+                            <a href="{{ url_for('index', user = message['user']) }}"><button type="Go to Home Page" class="btn btn-primary btn-custom-border text-uppercase">Go to Home Page</button></a>
+                        </span>
+                    </div>
+                </div> <!-- ./col- -->
+                
+
+                <nav class="page-nav clear">
+                    <div class="container">
+                        <div class="flex flex-middle space-between">
+                            <!-- <span class="prev-page"><a href="services.html" class="link">&larr; Prev Page</a></span> -->
+                            <span class="copyright hidden-xs">Copyright &copy; 2022 PSG TECH RESERVED.</span>
+                            <!-- <span class="next-page"><a href="works.html" class="link">Next Page &rarr;</a></span> -->
+                        </div>
+                    </div>
+                    <!-- /.page-nav -->
+                </nav>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

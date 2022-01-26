@@ -1,57 +1,268 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blood Bank Management System</title>
-    <link rel="stylesheet" href="static/index.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet">
-</head>
-<body>
-    <h1>blood bank management system</h1>
-    {% if session.get('doctor_logged_in', None) or session.get('hospital_logged_in', None) %}
-    <p>{{ message['user'] }} dashboard</p>
-    <div class="container">
-        <a href="{{ url_for( 'profile', user = message['user'] ) }}"><button class="child">Profile</button></a>
-        <form action="/logout/{{ message['user'] }}" method="POST">
-            <button type="submit" class="child">Logout</button>
-        </form>
+<html class="no-js" lang="">
+    <head>
+        <!-- meta charset -->
+        <meta charset="utf-8">
+        <!-- site title -->
+        <title>Blood bank Management system</title>
+        <!-- meta description -->
+        <meta name="description" content="">
+        <!-- mobile viwport meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- adding a icon to the website tab (custom icon) -->
+        <link rel="shortcut icon" href="https://cdn-icons.flaticon.com/png/128/603/premium/603227.png?token=exp=1642354175~hmac=6ebcfaf769c98b04a662e7aa3e48af82"/>
+        
+        <!-- ================================
+        CSS Files
+        ================================= -->
+        <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i|Open+Sans:400,600,700,800" rel="stylesheet">
+        <link href="static/styles.css" rel="stylesheet">
+        <link rel="stylesheet" href="static/themefisher-fonts.min.css">
+        <link rel="stylesheet" href="static/owl.carousel.min.css">
+        <link rel="stylesheet" href="static/bootstrap.min.css">
+        <link rel="stylesheet" href="static/main.css">
+        <link id="color-changer" rel="stylesheet" href="static/color-0.css">
+    </head>
 
-    </div>
-    {% endif %}
+    <body>
+
+        
+        <div class="preloader">
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+        </div>
+        
+
+        
+        
+        <main class="site-wrapper">
+            {% if session.get('doctor_logged_in', None) or session.get('hospital_logged_in', None) %}
+            <!-- <main class="site-wrapper"> -->
+                <!-- <div class="pt-table"> -->
+                    <!-- <div class="overlay"></div> -->
+                    <!-- <h2>{{ message['user'] }} dashboard</h2> -->
+                    <div class="page-title home text-center">
+                        <!-- <img src="static/img/phantom.png" alt=""> -->
+                        <h2 style="color: rgb(236, 154, 60);">{{ message['user'] }} dashboard</h2>
+                        <!-- <p>Tears of a mother cannot save her Child. But your Blo​od can​.​</p> -->
+                    </div>
+                    <div class="btn-doctor_login profile_btn">
+                        <a href="{{ url_for( 'profile', user = message['user'] ) }}"><button class="btn btn-primary btn-custom-border text-uppercase">Profile</button></a>
+                    </div>
+                    <div class="profile_btn">
+                        <form action="/logout/{{ message['user'] }}" method="POST">
+                            <button type="submit" class="btn btn-primary btn-custom-border text-uppercase" >Logout</button>
+                        </form>
+                    </div>
+                    <!-- </div> -->
+            <!-- </main> -->
+            {% endif %}
+            {% if not session.get('doctor_logged_in', None) and not session.get('hospital_logged_in', None) %} 
+            <div class="pt-table">
+                <div class="pt-tablecell page-home relative" style="background-image: url('static/img/banner.jpg');">
+                    <div class="overlay"></div>
+                    
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                                <div class="page-title home text-center">
+                                    <!-- <img src="static/img/phantom.png" alt=""> -->
+                                    <h2>EMERGENCY BLOOD REQUEST AND AQUISITION SYSTEM</h2>
+                                    <p>Tears of a mother cannot save her Child. But your Blo​od can​.​</p>
+                                </div>
+                                
+
+                                <!---start of the hexagon part-->
+                                <div class="hexagon-menu clear">
+                                    <div class="hexagon-item">
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <a href='{{ url_for("login_page", user = "doctor") }}' class="hex-content">
+                                            <span class="hex-content-inner">
+                                                <span class="icon">
+                                                    <i class="tf-profile-male"></i>
+                                                </span>
+                                                <span class="title">Doctors Login</span>
+                                            </span>
+                                            <svg viewbox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
+                                        </a>
+                                    </div>
+                                    <div class="hexagon-item">
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <a href='{{ url_for("login_page", user = "hospital") }}' class="hex-content">
+                                            <span class="hex-content-inner">
+                                                <span class="icon">
+                                                    <i class="tf-ion-ios-home"></i>
+                                                </span>
+                                                <span class="title">Hospital Login</span>
+                                            </span>
+                                            <svg viewbox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
+                                        </a>
+                                    </div>
+                                    <div class="hexagon-item">
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <a href="{{url_for('donate')}}" class="hex-content">
+                                            <span class="hex-content-inner">
+                                                <span class="icon">
+                                                    <i class="tf-ion-waterdrop"></i>
+                                                </span>
+                                                <span class="title">Donate</span>
+                                            </span>
+                                            <svg viewbox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
+                                        </a>    
+                                    </div>
+                                    <div class="hexagon-item">
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <a href="{{url_for('ask')}}" class="hex-content">
+                                            <span class="hex-content-inner">
+                                                <span class="icon">
+                                                    <i class="tf-hourglass"></i>
+                                                </span>
+                                                <span class="title">Request</span>
+                                            </span>
+                                            <svg viewbox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
+                                        </a>
+                                    </div>
+                                    <div class="hexagon-item">
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <a href="" class="hex-content">
+                                            <span class="hex-content-inner">
+                                                <span class="icon">
+                                                    <i class="tf-hourglass"></i>
+                                                </span>
+                                                <span class="title">empty</span>
+                                            </span>
+                                            <svg viewbox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
+                                        </a>
+                                    </div>
+                                    <div class="hexagon-item">
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <a href="testimonials.html" class="hex-content">
+                                            <span class="hex-content-inner">
+                                                <span class="icon">
+                                                    <i class="tf-chat"></i>
+                                                </span>
+                                                <span class="title">Testimonials</span>
+                                            </span>
+                                            <svg viewbox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
+                                        </a>
+                                    </div>
+                                    <div class="hexagon-item">
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <div class="hex-item">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                        <a href="contact.html" class="hex-content">
+                                            <span class="hex-content-inner">
+                                                <span class="icon">
+                                                    <i class="tf-envelope2"></i>
+                                                </span>
+                                                <span class="title">Contact</span>
+                                            </span>
+                                            <svg viewbox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
+                                        </a>
+                                    </div>
+                                    <!---end of the hexagon part-->
+
+
+                                </div> <!-- /.hexagon-menu -->
+                                
+                            </div> <!-- /.col-xs-12 -->
+
+                        </div> <!-- /.row -->
+                    </div> <!-- /.container -->
+                </div> <!-- /.pt-tablecell -->
+            </div> <!-- /.pt-table -->
+            {% endif %}
     
-    {% if not session.get('doctor_logged_in', None) and not session.get('hospital_logged_in', None) %}
-    <p>Would you like to</p>
-    <div class="container">
-        <a href="{{ url_for('donate') }}"><button class="child">donate</button></a>
-        <p class="child-p">or</p>
-        <a href="{{ url_for('ask') }}"><button class="child">request</button></a>
-    </div>
-    <p>blood 🩸?</p>
+            {% if session.get('doctor_logged_in', None) %}
+            <div class="btn-doctor_login">
+                <a href='{{ url_for("view_donor", user = "doctor") }}'><button class="btn btn-primary btn-custom-border text-uppercase">View all Donors</button></a>
+                <a href='{{ url_for("verification", user = "doctor") }}'><button class="btn btn-primary btn-custom-border text-uppercase">Verify Donors</button></a>
+            </div>
+            {% endif %}
     
-    <p style="text-align: center; padding-top: 80px;">Login</p>
-    <div class="container">
-        <a href='{{ url_for("login_page", user = "doctor") }}''><button class="child">Doctors</button></a>
-        <p class="child-p">or</p>
-        <a href='{{ url_for("login_page", user = "hospital") }}'><button class="child">Hospitals</button></a>
-    </div>
-    {% endif %}
-
-    {% if session.get('doctor_logged_in', None) %}
-    <div class="container" style="padding-top: 80px;">
-        <a href='{{ url_for("view_donor", user = "doctor") }}'><button class="child">View all Donors</button></a>
-        <a href='{{ url_for("verification", user = "doctor") }}'><button class="child">Verify Donors</button></a>
-    </div>
-    {% endif %}
-
-    {% if session.get('hospital_logged_in', None) %}
-    <div class="container" style="padding-top: 80px;">
-        <a href="{{ url_for('view_request') }}"><button class="child">View all Requests</button></a>
-        <a href='{{ url_for("verification", user = "hospital") }}'><button class="child">Verify Recipients</button></a>
-    </div>
-    {% endif %}
-</body>
+            {% if session.get('hospital_logged_in', None) %}
+            <div class="btn-doctor_login">
+                <a href="{{ url_for('view_request') }}"><button class="btn btn-primary btn-custom-border text-uppercase">View all Requests</button></a>
+                <a href='{{ url_for("verification", user = "hospital") }}'><button class="btn btn-primary btn-custom-border text-uppercase">Verify Recipients</button></a>
+            </div>
+            {% endif %}
+        </main> <!-- /.site-wrapper -->
+        
+        <!-- ================================
+        JavaScript Libraries
+        ================================= -->
+        <script src="static/jquery-2.2.4.min.js"></script>
+        <script src="static/bootstrap.min.js"></script>
+        <!-- <script src="js/jquery.easing.min.js"></script> -->
+        <script src="static/isotope.pkgd.min.js"></script>
+        <script src="static/jquery.nicescroll.min.js"></script>
+        <script src="static/owl.carousel.min.js"></script>
+        <script src="static/jquery-validation.min.js"></script>
+        <script src="static/form.min.js"></script>
+        <script src="static/main.js"></script>
+    </body>
 </html>

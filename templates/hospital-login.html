@@ -1,8 +1,123 @@
-{% extends 'doctor-login.html' %}
-{% block title %}
-<title>Hopital Login</title>
-{% endblock %}
-{% block heading %}
-<p>Hospital Login</p>
-<form action="/login/hospital" method="POST">
-{% endblock %}
+<!DOCTYPE html>
+<html class="no-js" lang="">
+    <head>
+        <!-- meta charset -->
+        <meta charset="utf-8">
+        <!-- site title -->
+        <title>Blood bank Management system</title>
+        <!-- meta description -->
+        <meta name="description" content="">
+        <!-- mobile viwport meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- fevicon -->
+        <link rel="shortcut icon" href="https://cdn-icons.flaticon.com/png/128/603/premium/603227.png?token=exp=1642354175~hmac=6ebcfaf769c98b04a662e7aa3e48af82"/>
+        
+        <!-- ================================
+        CSS Files
+        ================================= -->
+        <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i|Open+Sans:400,600,700,800" rel="stylesheet">
+        <link rel="stylesheet" href="/static/themefisher-fonts.min.css">
+        <link rel="stylesheet" href="/static/owl.carousel.min.css">
+        <link rel="stylesheet" href="/static/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        <link id="color-changer" rel="stylesheet" href="/static/color-0.css">
+    </head>
+
+    <body>
+        <div class="preloader">
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+        </div>
+        <main class="site-wrapper">
+            <div class="pt-table">
+                <div class="pt-tablecell page-resume relative">
+                    <!-- .close -->
+                    <!-- <a href="./" class="page-close"><i class="tf-ion-close"></i></a> -->
+                    <!-- /.close -->
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                                <div class="page-title text-center">
+                                    <h2><span class="primary">Hospital's Login</span></h2>
+                                    <!-- <p style="color :rgb(236, 154, 60); ">Blood donation is the most important social service to humankind. By donating we can give others a life support. Blood Donation&nbsp;at the right time can save millions of lifes all over the world every year. Join us in this noble service in saving lifes. Register yourself below!!</p> -->
+                                </div>
+                            </div>
+                        </div> 
+
+                        <!--starting of the ipnut form-->
+                        <form id="contact-form" class="row contact-form no-gutter" action = '/login/hospital' method="POST">
+
+                            <div class="label col-xs-12 col-sm-6">
+                                <p style="color:black;">Enter your User ID</p>
+                            </div>
+                            <div class="col-xs-6 col-sm-5">
+                                <div class="input-field name">
+                                    <span class="input-icon" id="userid" ><i class="tf-ion-android-person"></i></span>
+                                    <input type="text" class="form-control" name="userid" placeholder="User ID" maxlength="10" required/>
+                                </div>
+                            </div> <!-- ./col- -->
+
+                            <div class="label col-xs-12 col-sm-6">
+                                <p style="color:black;">Enter your Password</p>
+                            </div>
+                            <div class="col-xs-6 col-sm-5">
+                                <div class="input-field name">
+                                    <span class= "input-icon" id="password"><i class="tf-ion-android-person"></i></span>
+                                    <input type="password" class="form-control" name="password" placeholder="Password" maxlength="50" required/>
+                                </div>
+                            </div> <!-- ./col- -->
+
+                            <div class="btn-doctor_login col-xs-12 col-sm-12">
+                                <div class="input-field">
+                                    <span class="btn-border">
+                                        <button type="submit" class="btn btn-primary btn-custom-border text-uppercase">SUBMIT</button>
+                                    </span>
+                                </div>
+                            </div> <!-- ./col- -->
+
+                        </form> <!-- /.row -->
+                        <!--ending of the ipnut form-->
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="input-field button">
+                                <span class="btn-border">
+                                    <a href="{{url_for('index')}}"><button type="Go to Home Page" class="btn btn-primary btn-custom-border text-uppercase">Go to Home Page</button></a>
+                                </span>
+                            </div>
+                        </div> <!-- ./col- -->
+                        
+
+                    <nav class="page-nav clear">
+                        <div class="container">
+                            <div class="flex flex-middle space-between">
+                                <!-- <span class="prev-page"><a href="services.html" class="link">&larr; Prev Page</a></span> -->
+                                <span class="copyright hidden-xs">Copyright &copy; 2022 PSG TECH RESERVED.</span>
+                                <!-- <span class="next-page"><a href="works.html" class="link">Next Page &rarr;</a></span> -->
+                            </div>
+                        </div>
+                        <!-- /.page-nav -->
+                    </nav>
+                    <!-- /.container -->
+
+                </div> <!-- /.pt-tablecell -->
+            </div> <!-- /.pt-table -->
+        </main> <!-- /.site-wrapper -->
+        
+        <!-- ================================
+        JavaScript Libraries
+        ================================= -->
+        <script src="/static/jquery-2.2.4.min.js"></script>
+        <script src="/static/bootstrap.min.js"></script>
+        <script src="/static/jquery.easing.min.js"></script>
+        <script src="/static/isotope.pkgd.min.js"></script>
+        <script src="/static/jquery.nicescroll.min.js"></script>
+        <script src="/static/owl.carousel.min.js"></script>
+        <script src="/static/jquery-validation.min.js"></script>
+        <script src="/static/form.min.js"></script>
+        <script src="/static/main.js"></script>
+    </body>
+</html>

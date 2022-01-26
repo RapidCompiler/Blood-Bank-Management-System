@@ -318,7 +318,12 @@ def verification(user):
         print(query)
         cursor.execute(query)
         conn.commit()
-        return render_template('success.html')
+        query = f"select v_id from {user}_verification where aadhar_id = '{aadhar}'"
+        print(query)
+        cursor.execute(query)
+        vid = cursor.fetchone()
+        requests = vid[0]
+        return render_template('success.html', requests=requests)
 
     user = "donor" if user == "doctor" else "request"
     if session.get("doctor_logged_in", None) or session.get('hospital_logged_in', None):

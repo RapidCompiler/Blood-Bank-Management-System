@@ -1,14 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Success</title>
-    <link rel="stylesheet" href="/static/form.css">
-</head>
-<body>
-    <p>Details entered successfully!</p>
-    <a href="{{ url_for('index') }}"><button class="child">Go to Home Page</button></a>
-</body>
+<html class="no-js" lang="">
+    <head>
+        <!-- meta charset -->
+        <meta charset="utf-8">
+        <!-- site title -->
+        <title>Blood bank Management system</title>
+        <!-- meta description -->
+        <meta name="description" content="">
+        <!-- mobile viwport meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- fevicon -->
+        <link rel="shortcut icon" href="https://cdn-icons.flaticon.com/png/128/603/premium/603227.png?token=exp=1642354175~hmac=6ebcfaf769c98b04a662e7aa3e48af82"/>
+        
+        <!-- ================================
+        CSS Files
+        ================================= -->
+        <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i|Open+Sans:400,600,700,800" rel="stylesheet">
+        <link rel="stylesheet" href="/static/themefisher-fonts.min.css">
+        <link rel="stylesheet" href="/static/owl.carousel.min.css">
+        <link rel="stylesheet" href="/static/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        <link id="color-changer" rel="stylesheet" href="/static/color-0.css">
+    </head>
+
+    <body>
+
+        <div class="preloader">
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+        </div>
+
+        <main class="site-wrapper">
+            <div class="pt-table">
+                <div class="pt-tablecell page-resume relative">
+                    <!-- .close -->
+                    <!-- <a href="./" class="page-close"><i class="tf-ion-close"></i></a> -->
+                    <!-- /.close -->
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                                <div class="page-title text-center">
+                                    <h2 style="font-family:'Courier New', Courier, monospace">Thank You</h2>
+                                    <p style="color: rgb(255, 192, 19);font-size: 30px;">Data Entered Successfully</p>
+                                    <br></br>
+
+                                    <!-- {% for i in requests["vid"] %}
+                                    {% endfor %} -->
+                                    <h2 style="color:rgb(0, 142, 236); font-family:'Courier New', Courier, monospace"> Verification ID: {{requests}}</h2>
+
+                                    <p style="color :rgb(236, 154, 60); ">"Every blood donor is an asset to the nation who saves the lives of people and you’re one of them. Thank you for your regular contribution to our blood donation drive. We appreciate your efforts. Thank you."</p>
+                                    <a href="{{ url_for('index') }}"><button class="btn btn-primary btn-custom-border text-uppercase text-center">Go to Home Page</button></a>
+                                </div>
+                            </div>
+                        </div> 
+
+                    <nav class="page-nav clear">
+                        <div class="container">
+                            <div class="flex flex-middle space-between">
+                                <!-- <span class="prev-page"><a href="services.html" class="link">&larr; Prev Page</a></span> -->
+                                <span class="copyright hidden-xs">Copyright &copy; 2021 PSG TECH RESERVED.</span>
+                                <!-- <span class="next-page"><a href="works.html" class="link">Next Page &rarr;</a></span> -->
+                            </div>
+                        </div>
+                        <!-- /.page-nav -->
+                    </nav>
+                    <!-- /.container -->
+
+                </div> <!-- /.pt-tablecell -->
+            </div> <!-- /.pt-table -->
+        </main> 
+        
+        <!-- ================================
+        JavaScript Libraries
+        ================================= -->
+        <script src="/static/jquery-2.2.4.min.js"></script>
+        <script src="/static/bootstrap.min.js"></script>
+        <script src="/static/jquery.easing.min.js"></script>
+        <script src="/static/isotope.pkgd.min.js"></script>
+        <script src="/static/jquery.nicescroll.min.js"></script>
+        <script src="/static/owl.carousel.min.js"></script>
+        <script src="/static/jquery-validation.min.js"></script>
+        <script src="/static/form.min.js"></script>
+        <script src="/static/main.js"></script>
+    </body>
 </html>

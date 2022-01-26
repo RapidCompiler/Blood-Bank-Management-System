@@ -1,37 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block title %}
-    <title>Doctor Login</title>
-    {% endblock %}
-    <link rel="stylesheet" href="/static/form.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet">
-</head>
-<body>
-    {% block heading %}
-    <p>Doctor Login</p>
-    <form action='/login/doctor' method="POST">
-    {% endblock %}
+<html class = "no-js" lang="en">
+    <head>
+        <!-- meta charset -->
+        <meta charset="utf-8">
+        <!-- site title -->
+        <title>Blood bank Management system</title>
+        <!-- meta description -->
+        <meta name="description" content="">
+        <!-- mobile viwport meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- fevicon -->
+        <link rel="shortcut icon" href="https://cdn-icons.flaticon.com/png/128/603/premium/603227.png?token=exp=1642354175~hmac=6ebcfaf769c98b04a662e7aa3e48af82"/>
+        
+        <!-- ================================
+        CSS Files
+        ================================= -->
+        <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i|Open+Sans:400,600,700,800" rel="stylesheet">
+        <link rel="stylesheet" href="/static/themefisher-fonts.min.css">
+        <link rel="stylesheet" href="/static/owl.carousel.min.css">
+        <link rel="stylesheet" href="/static/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        <link id="color-changer" rel="stylesheet" href="/static/color-0.css">
+    </head>
 
-        <div class="container">
-            <label for="userid">Enter your ID</label>
-            <input type="text" name="userid" placeholder="User ID" maxlength="10" required/>
-            <br>
-            <label for="password">Enter Password</label>
-            <input type="password" name="password" placeholder="Password" maxlength="50" required/>
+    <body>
+        <div class="preloader">
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
         </div>
-        {% if message["error"] %}
-        <div class="error-text">
-            <p style="border-radius: 15px; background-color: rgba(255, 0, 0, 0.637); width: max-content; padding: 10px 10px 10px 10px;">{{ message["error"] }}</p>
-        </div>
-        {% endif %}
-        <button type="submit">Log In</button>
-    </form>
-    <a href="{{ url_for('index') }}"><button>Go to home page</button></a>
-</body>
+        <main class="site-wrapper">
+            <div class="pt-table">
+                <div class="pt-tablecell page-resume relative">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                                <div class="page-title text-center">
+                                    <h2><span class="primary">Doctor's Login</span></h2>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <!--starting of the ipnut form-->
+                        <form id="contact-form" class="row contact-form no-gutter" action = '/login/doctor' method="POST">
+
+                            <div class="label col-xs-12 col-sm-6">
+                                <p style="color:black;">Enter your User ID</p>
+                            </div> 
+                            <div class="col-xs-6 col-sm-4">
+                                <div class="input-field">
+                                    <span class="input-icon" id="userid" ><i class="tf-ion-android-person"></i></span>
+                                    <input type="text" class="form-control" name="userid" placeholder="User ID" maxlength="10" required/>
+                                </div> 
+                            </div> <!--./col-->
+
+                            <div class="label col-xs-12 col-sm-6">
+                                <p style="color:black;">Enter your Password</p>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="input-field">
+                                    <span class= "input-icon" id="password"><i class="tf-ion-android-person"></i></span>
+                                    <input type="password" class="form-control" name="password" placeholder="Password" maxlength="50" required/>
+                                </div>
+                            </div>  <!--./col--> 
+
+                            <div class="btn-doctor_login col-xs-12 col-sm-12">
+                                <div class="input-field">
+                                    <span class="btn-border">
+                                        <button type="submit" class="btn btn-primary btn-custom-border text-uppercase">SUBMIT</button>
+                                    </span>
+                                </div>
+                            </div> <!--./col-->
+
+                        </form> <!-- /.row -->
+                        <!--ending of the ipnut form-->
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="input-field button">
+                                <span class="btn-border">
+                                    <a href="{{url_for('index')}}"><button type="Go to Home Page" class="btn btn-primary btn-custom-border text-uppercase">Go to Home Page</button></a>
+                                </span>
+                            </div>
+                        </div> <!-- ./col- -->
+                        
+
+                        <nav class="page-nav clear">
+                            <div class="container">
+                                <div class="flex flex-middle space-between">
+                                    <!-- <span class="prev-page"><a href="services.html" class="link">&larr; Prev Page</a></span> -->
+                                    <span class="copyright hidden-xs">Copyright &copy; 2022 PSG TECH RESERVED.</span>
+                                    <!-- <span class="next-page"><a href="works.html" class="link">Next Page &rarr;</a></span> -->
+                                </div>
+                            </div>
+                            <!-- /.page-nav -->
+                        </nav>
+                    </div><!-- /.container -->
+
+                </div> <!-- /.pt-tablecell -->
+            </div> <!-- /.pt-table -->
+        </main> <!-- /.site-wrapper -->
+        
+        <!-- ================================
+        JavaScript Libraries
+        ================================= -->
+        <script src="/static/jquery-2.2.4.min.js"></script>
+        <script src="/static/bootstrap.min.js"></script>
+        <script src="/static/jquery.easing.min.js"></script>
+        <script src="/static/isotope.pkgd.min.js"></script>
+        <script src="/static/jquery.nicescroll.min.js"></script>
+        <script src="/static/owl.carousel.min.js"></script>
+        <script src="/static/jquery-validation.min.js"></script>
+        <script src="/static/form.min.js"></script>
+        <script src="/static/main.js"></script>
+    </body>
 </html>

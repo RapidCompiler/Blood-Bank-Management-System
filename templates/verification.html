@@ -4,27 +4,113 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify {{ message['user'] }}</title>
-    <link rel="stylesheet" href="/static/form.css">
+    <title>Blood bank Management system</title>
+    <link rel="shortcut icon" href="https://cdn-icons.flaticon.com/png/128/603/premium/603227.png?token=exp=1642354175~hmac=6ebcfaf769c98b04a662e7aa3e48af82"/>
+    <!-- <title>{{ message['user'].title() }} Profile</title> -->
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i|Open+Sans:400,600,700,800" rel="stylesheet">
+    <link rel="stylesheet" href="/static/themefisher-fonts.min.css">
+    <link rel="stylesheet" href="/static/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/main.css">
+    <link id="color-changer" rel="stylesheet" href="/static/color-0.css">
+
+    <!-- online code--> 
+    <style type=text/css>
+        p {
+            background-color: gray;
+            margin: 10px;
+        }
+          
+        div {
+            color: white;
+            background-color: 009900;
+            margin: 2px;
+            font-size: 25px;
+        }
+          
+        body {
+            text-align: center;
+        }
+    </style>
+    <!-- end of online code -->
+
+
 </head>
 <body>
-    <p>Verify {{ message['user'] }}s</p>
-    <p>Please enter the following details</p>
-    <form action='{{ url_for("verification", user = message["user"]) }}' method="POST">
-        <div class="container">
-            <input name="first_name" placeholder="First Name" required/>
-            <input name="last_name" placeholder="Last Name" required/>
-        </div>
-        <div class="container">
-            <input type="number" name="aadhar" placeholder="Aadhar Number" maxlength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)" />
-        </div>
-        {% if message["error"] %}
-            <div class="error-text">
-                <p style="border-radius: 15px; background-color: rgba(255, 0, 0, 0.637); width: max-content; padding: 10px 10px 10px 10px;">{{ message["error"] }}</p>
+    <main class="site-wrapper">
+    <!-- <title>Verify {{ message['user'] }}</title> -->
+        <div class="pt-table">
+            <div class="pt-tablecell page-resume relative">
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                        <div class="page-title text-center ">
+                            <h2><span class="primary">Verify {{ message['user'] }}s</span></h2>
+                            <!-- <p style="color :rgb(236, 154, 60); ">Blood donation is the most important social service to humankind. By donating we can give others a life support. Blood Donation&nbsp;at the right time can save millions of lifes all over the world every year. Join us in this noble service in saving lifes. Register yourself below!!</p> -->
+                        </div>
+                    </div>
+                </div> 
+                <!-- <h2>Verify {{ message['user'] }}s</h2> -->
+                <h3>Please enter the following details</h3>
+                <form id="contact-form" class="row contact-form no-gutter" action='{{ url_for("verification", user = message["user"]) }}' method="POST">
+                    <div class="col-xs-12 col-sm-5">
+                        <div class="input-field phone">
+                            <span class="input-icon" id="first_name" ><i class="tf-ion-android-person"></i></span>
+                            <input type="text" class="form-control"  name = "first_name" placeholder="Enter your First Name">
+                        </div>
+                    </div> <!-- ./col- -->
+
+                    <div class="col-xs-12 col-sm-5">
+                        <div class="input-field phone">
+                            <span class= "input-icon" id="last_name"><i class="tf-ion-android-person"></i></span>
+                            <input type="text" class="form-control" name="last_name" placeholder="Enter your Last Name">
+                        </div>
+                    </div> <!-- ./col- -->
+
+                    <div class="col-xs-12 col-sm-5">
+                        <div class="input-field phone">
+                            <span class= "input-icon" id="phone"><i class="tf-ion-android-phone-portrait"></i></span>
+                            <input type="number" class="form-control" name="aadhar" placeholder="Enter your Aadhar number" maxlength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)">
+                        </div>
+                    </div> <!-- ./col- -->
+
+                    {% if message["error"] %}
+                        <div class="error-text">
+                            <p style="border-radius: 15px; background-color: rgba(255, 0, 0, 0.637); width: max-content; padding: 10px 10px 10px 10px;">{{ message["error"] }}</p>
+                        </div>
+                    {% endif %}
+
+
+                    <div class="btn-doctor_login col-xs-12 col-sm-12">
+                        <div class="input-field">
+                            <span class="btn-border">
+                                <button type="submit" class="btn btn-primary btn-custom-border text-uppercase">SUBMIT</button>
+                            </span>
+                        </div>
+                    </div>
+
+                </form>
+                <!-- <p></p> -->
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="input-field button">
+                            <span class="btn-border">
+                                <a href="{{ url_for('index', user = message['user']) }}"><button type="Go to Home Page" class="btn btn-primary btn-custom-border text-uppercase">Go to Home Page</button></a>
+                            </span>
+                        </div>
+                    </div> <!-- ./col- -->
+                    
+                    <p></p>
+                    <nav class="page-nav clear">
+                        <div class="container">
+                            <div class="flex flex-middle space-between">
+                                <span class="copyright hidden-xs">Copyright &copy; 2022 PSG TECH RESERVED.</span>
+                            </div>
+                        </div>
+                        <!-- /.page-nav -->
+                    </nav>
+
             </div>
-        {% endif %}
-        <button type="submit">Submit</button>
-    </form>
-    <a href="{{ url_for('index') }}"><button>Go to home page</button></a>
+        </div>
+    </main>
 </body>
 </html>

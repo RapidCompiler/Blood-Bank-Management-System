@@ -1,71 +1,209 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donate Blood</title>
-    <link rel="stylesheet" href="static/form.css">
-</head>
-<body>
-    <p>Please enter the following details</p>
-    <form action='/donate_success' method="POST">
-        <div class="container">
-            <input name="first_name" placeholder="First Name" required/>
-            <input name="last_name" placeholder="Last Name" required/>
-            <label for="sex">sex</label>
-            <select name="sex" id="sex" required>
-                <option value="male" selected>male</option>
-                <option value="female">female</option>
-                <option value="other">other</option>
-              </select>
+<html class="no-js" lang="">
+    <head>
+        <!-- meta charset -->
+        <meta charset="utf-8">
+        <!-- site title -->
+        <title>Blood bank Management system</title>
+        <!-- meta description -->
+        <meta name="description" content="">
+        <!-- mobile viwport meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- fevicon -->
+        <link rel="shortcut icon" href="https://cdn-icons.flaticon.com/png/128/603/premium/603227.png?token=exp=1642354175~hmac=6ebcfaf769c98b04a662e7aa3e48af82"/>
+        
+        <!-- ================================
+        CSS Files
+        ================================= -->
+        <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i|Open+Sans:400,600,700,800" rel="stylesheet">
+        <link rel="stylesheet" href="static/themefisher-fonts.min.css">
+        <link rel="stylesheet" href="static/owl.carousel.min.css">
+        <link rel="stylesheet" href="static/bootstrap.min.css">
+        <link rel="stylesheet" href="static/main.css">
+        <link id="color-changer" rel="stylesheet" href="static/color-0.css">
+    </head>
+
+    <body>
+
+        <div class="preloader">
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
+            <div class="loading-mask"></div>
         </div>
-        <div class="container">
-            <label for="city">Choose your City</label>
-            <select name="city" id="city" required>
-                <option selected disabled>Select a City</option>
-                {% for city in message['city']%}
-                <option value="{{city}}">{{city}}</option>
-                {% endfor %}
-            </select><br>
-            <label for="locality">Choose your Locality</label>
-            <select name="locality" id="locality" required>
-                <option selected disabled>Select a Locality</option>
-                {% for local in message['local']%}
-                <option value="{{local[0]}}">{{ local[0] }} - {{ local[1] }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        </div>
-        </div>
-        <div class="container">
-            <input type="number" name="phone" placeholder="Phone Number" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)" />
-            <input type="number" name="aadhar" placeholder="Aadhar Number" maxlength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)" />
-        </div>
-        <div class="container">
-            <label for="blood_group">select blood group</label>
-            <select name="blood_group" id="blood_group" required>
-                <option value="a">A</option>
-                <option value="b">B</option>
-                <option value="ab">AB</option>
-                <option value="o">O</option>
-              </select>
-            <select name="blood_polarity" id="blood_polarity" required>
-                <option value="plus">+</option>
-                <option value="minus">-</option>
-            </select>
-        </div>
-        <div class="container">
-            <label for="v_id">Enter Verification Number</label>
-            <input name="v_id" placeholder="Verification ID">
-        </div>
-        {% if message["error"] %}
-            <div class="error-text">
-                <p style="border-radius: 15px; background-color: rgba(255, 0, 0, 0.637); width: max-content; padding: 10px 10px 10px 10px;">{{ message["error"] }}</p>
-            </div>
-        {% endif %}
-        <button type="submit">Submit</button>
-    </form>
-    <a href="{{ url_for('index') }}"><button>Go to home page</button></a>
-</body>
+
+        <main class="site-wrapper">
+            <div class="pt-table">
+                <div class="pt-tablecell page-resume relative">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                                <div class="page-title text-center">
+                                    <h2><span class="primary">DONATION</span></h2>
+                                    <p style="color :rgb(236, 154, 60); ">Blood donation is the most important social service to humankind. By donating we can give others a life support. Blood Donation&nbsp;at the right time can save millions of lifes all over the world every year. Join us in this noble service in saving lifes. Register yourself below!!</p>
+                                </div>
+                            </div>
+                        </div> 
+
+
+                        <!--starting of the ipnut form-->
+                        <form id="contact-form" class="row contact-form no-gutter" action = '/donate_success' method="POST">
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="input-field name">
+                                    <span class="input-icon" id="first_name" ><i class="tf-ion-android-person"></i></span>
+                                    <input type="text" class="form-control"  name = "first_name" placeholder="Enter your First Name">
+                                </div>
+                            </div> <!-- ./col- -->
+
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="input-field email">
+                                    <span class= "input-icon" id="last_name"><i class="tf-ion-android-person"></i></span>
+                                    <input type="text" class="form-control" name="last_name" placeholder="Enter your Last Name">
+                                </div>
+                            </div> <!-- ./col- -->
+
+
+                            <!---test select box-->
+                            <div class="combo col-xs-12 col-sm-6">
+                                <div class="input-field name">
+                                    <span class= "input-icon" id="sex"><i class="tf-ion-female"></i></span>
+                                    <select name="sex" id="sex" required>
+                                        <option value="" selected>Please select Your Gender</option>
+                                        <option value="male">male</option>
+                                        <option value="female">female</option>
+                                        <option value="other">other</option>
+                                    </select>
+                                </div>  
+                            </div>
+                              
+                            <div class="combo city col-xs-12 col-sm-6">
+                                <div class="input-field name">
+                                    <!-- <span class="input-icon" id="city" ><i class="tf-ion-ios-home"></i></span>
+                                    <input type="text" class="form-control"  name = "city" placeholder="Enter your City"> -->
+                                    <span class= "input-icon" id="city"><i class="tf-ion-ios-home"></i></span>
+                                    <select name="city" id="city" required>
+                                        <option selected="selected">Select a City</option>
+                                        {% for city in message['city']%}
+                                        <option value="{{city}}">{{city}}</option>
+                                        {% endfor %}
+                                      </select>
+                                </div>
+                            </div> <!-- ./col- -->  
+
+                            <div class="combo phone     col-xs-12 col-sm-6">
+                                <div class="input-field name">
+                                    <span class= "input-icon" id="blood_group"><i class="tf-streetsign"></i></span>
+                                    <select name="locality" id="locality">
+                                        <option value="" selected="selected">Select a Locality</option>
+                                        {% for local in message['local']%}
+                                        <option value="{{local[0]}}">{{ local[0] }} - {{ local[1] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="phone col-xs-12 col-sm-6">
+                                <div class="input-field">
+                                    <span class= "input-icon" id="phone"><i class="tf-ion-android-phone-portrait"></i></span>
+                                    <input type="number" class="form-control" name="phone" placeholder="Enter your Phone number" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)">
+                                </div>
+                            </div> <!-- ./col- -->
+
+                            <div class="phone col-xs-12 col-sm-6">
+                                <div class="input-field name">
+                                    <span class= "input-icon" id="aadhar"><i class="tf-ion-card"></i></span>
+                                    <input type="number" class="form-control" name="aadhar" placeholder="Enter the Aadhar number" maxlength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)">
+                                </div>
+                            </div> <!-- ./col- -->
+
+
+                            <div class="combo aadhar col-xs-12 col-sm-6">
+                                <div class="input-field name">
+                                    <span class= "input-icon" id="blood_group"><i class="tf-ion-waterdrop"></i></span>
+                                    <select name="blood_group" id="blood_group" required>
+                                        <option value="" selected>Please select Your blood group</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="AB">AB</option>
+                                        <option value="A1">A1</option>  
+                                        <option value="O">O</option>
+                                    </select>
+                                </div>  
+                            </div>
+
+                            <div class="combo verify col-xs-12 col-sm-6">
+                                <div class="input-field name">
+                                    <span class= "input-icon" id="blood_polarity"><i class="tf-ion-waterdrop"></i></span>
+                                    <select name="blood_polarity" id="blood_polarity" required>
+                                        <option value="" selected>Please select Your blood group polarity</option>
+                                        <option value="plus">+</option>
+                                        <option value="minus">-</option>
+                                    </select>
+                                </div>  
+                            </div>
+                            <div class="verify col-xs-12 col-sm-6">
+                                <div class="input-field name">
+                                    <span class= "input-icon" id="v_id"><i class="tf-ion-card"></i></span>
+                                    <!-- <select name="v_id" id="v_id" required> -->
+                                        <!-- <option value="" selected>Enter verification Number</option> -->
+                                        <input type="number" class="form-control" name="v_id" placeholder="verification ID">
+                                    <!-- </select> -->
+                                </div>  
+                            </div>
+                            {% if message["error"] %}
+                                <div class="error-text">
+                                    <p style="border-radius: 15px; background-color: rgba(255, 0, 0, 0.637); width: max-content; padding: 10px 10px 10px 10px;">{{ message["error"] }}</p>
+                                </div>
+                            {% endif %}
+
+                            <div class="top_margin col-xs-12 col-sm-12">
+                                <div class="input-field">
+                                    <span class="btn-border">
+                                        <button type="submit" class="btn btn-primary btn-custom-border text-uppercase">SUBMIT</button>
+                                    </span>
+                                </div>
+                            </div> <!-- ./col- -->
+
+                        </form> <!-- /.row -->
+                        <!--ending of the ipnut form-->
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="input-field button">
+                                <span class="btn-border">
+                                    <a href="{{url_for('index')}}"><button type="Go to Home Page" class="btn btn-primary btn-custom-border text-uppercase">Go to Home Page</button></a>
+                                </span>
+                            </div>
+                        </div> <!-- ./col- -->
+                        
+
+                        <nav class="page-nav clear">
+                            <div class="container">
+                                <div class="flex flex-middle space-between">
+                                    <!-- <span class="prev-page"><a href="services.html" class="link">&larr; Prev Page</a></span> -->
+                                    <span class="copyright hidden-xs">Copyright &copy; 2022 PSG TECH RESERVED.</span>
+                                    <!-- <span class="next-page"><a href="works.html" class="link">Next Page &rarr;</a></span> -->
+                                </div>
+                            </div>
+                            <!-- /.page-nav -->
+                        </nav>
+                    </div><!-- /.container -->
+                </div> <!-- /.pt-tablecell -->
+            </div> <!-- /.pt-table -->
+        </main> <!-- /.site-wrapper -->
+        
+        <!-- ================================
+        JavaScript Libraries
+        ================================= -->
+        <script src="static/jquery-2.2.4.min.js"></script>
+        <script src="static/bootstrap.min.js"></script>
+        <script src="static/jquery.easing.min.js"></script>
+        <script src="static/isotope.pkgd.min.js"></script>
+        <script src="static/jquery.nicescroll.min.js"></script>
+        <script src="static/owl.carousel.min.js"></script>
+        <script src="static/jquery-validation.min.js"></script>
+        <script src="static/form.min.js"></script>
+        <script src="static/main.js"></script>
+    </body>
 </html>

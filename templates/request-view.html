@@ -4,18 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <!-- <link rel="stylesheet" href="static/form.css"> -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet">
+    <title>Blood bank Management system</title>
+    <link rel="shortcut icon" href="https://cdn-icons.flaticon.com/png/128/603/premium/603227.png?token=exp=1642354175~hmac=6ebcfaf769c98b04a662e7aa3e48af82"/>
+    <!-- <link rel="stylesheet" href="static/form.css"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i|Open+Sans:400,600,700,800" rel="stylesheet">
+    <link rel="stylesheet" href="/static/themefisher-fonts.min.css">
+    <link rel="stylesheet" href="/static/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/main.css">
+    <link id="color-changer" rel="stylesheet" href="/static/color-0.css">
 
 </head>
 <body>
     <style>
         
         * {
-            font-family: 'Source Sans Pro', sans-serif;
-            background-color: #292929;
-            color: white;
+            font-family: 'Open Sans', sans-serif;
+            background-color: white;
+            color: black;
             text-transform: uppercase;
             box-sizing: border-box;
         }
@@ -26,7 +35,11 @@
         }
 
         table, th, td {
-            border: 1px solid rgb(119, 106, 106);
+          font-family: "Source Sans", sans-serif;
+          border: 3px solid black;
+          text-align: center;
+          margin-left: auto;
+          margin-right: auto;
         }
         
         /* Button used to open the contact form - fixed at the bottom of the page */
@@ -129,97 +142,115 @@
         </style>
         </head>
         <body>
-        
-        <h2>REQUESTS RECEIVED</h2>
-        <h3>REQUESTS BEING PROCESSED</h3>
-        <table>
-          <tr>
-            <th>Request ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone Number</th>
-            <th>Aadhar Number</th>
-            <th>Blood Group</th>
-            <th>Blood Polarity</th>
-            <th>Issue</th>
-            <th>change Status</th>
-          </tr>
-          {% for i in requests["processing"] %}
-          <tr>
-            <th>{{ i[0] }}</th>
-            <th>{{ i[1] }}</th>
-            <th>{{ i[2] }}</th>
-            <th>{{ i[3] }}</th>
-            <th>{{ i[4] }}</th>
-            <th>{{ i[5] }}</th>
-            <th>{{ '+' if i[6] == 1 else '-' }}</th>
-            <th>{{ i[7] }}</th>
-            <th><button class="open-button" onclick="openForm('{{i[0]}}')">Complete </button></th>
-          </tr>
-          {% endfor %}
-        </table>
-        
-        <h3>REQUESTS COMPLETED</h3>
-        <table>
-          <tr>
-            <th>Request ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone Number</th>
-            <th>Aadhar Number</th>
-            <th>Blood Group</th>
-            <th>Blood Polarity</th>
-            <th>Issue</th>
-            <th>Donor ID</th>
-            <th>Donor Name</th>
-          </tr>
-          {% for i in requests["completed"] %}
-          <tr>
-            <th>{{ i[0] }}</th>
-            <th>{{ i[1] }}</th>
-            <th>{{ i[2] }}</th>
-            <th>{{ i[3] }}</th>
-            <th>{{ i[4] }}</th>
-            <th>{{ i[5] }}</th>
-            <th>{{ '+' if i[6] == 1 else '-' }}</th>
-            <th>{{ i[7] }}</th>
-            <th>{{ i[8] }}</th>
-            <th>{{ i[9] }}</th>
-          </tr>
-          {% endfor %}
-        </table>
-        
-        <div class="form-popup" id="myForm">
-          <form action="{{ url_for('view_request') }}" method="POST" class="form-container">
-            <h1>MARK REQUEST AS COMPLETED</h1>
-            <label for="request_id">Request Id</label>
-            <input type="text" id="find-user" name="request_id" readonly required>
-            <label for="donor">Select Donor</label>
-            <select name="donor" id="donor" required>
-              <option value="" selected hidden disabled>Select a Donor</option>
-              {% for donor in requests['donors']%}
-              <option value="{{donor[0]}}">{{ donor[0] }} - {{ donor[1] }} {{ donor[2] }}</option>
-              {% endfor %}
-            </select>
+        <main class="site-wrapper">
+          <p></p>
+          <div class="row">
+            <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                <div class="page-title text-center ">
+                    <h2><span class="primary">REQUESTS RECEIVED</span></h2>
+                </div>
+            </div>
+          </div>
+          <!-- <h2>REQUESTS RECEIVED</h2> -->
+          <h2 style="font-weight: bold;" class="text-center">REQUESTS BEING PROCESSED</h3>
+          <table width="85%">
+            <tr>
+              <th>Request ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Phone Number</th>
+              <th>Aadhar Number</th>
+              <th>Blood Group</th>
+              <th>Blood Polarity</th>
+              <th>Issue</th>
+              <th>change Status</th>
+            </tr>
+            {% for i in requests["processing"] %}
+            <tr>
+              <th>{{ i[0] }}</th>
+              <th>{{ i[1] }}</th>
+              <th>{{ i[2] }}</th>
+              <th>{{ i[3] }}</th>
+              <th>{{ i[4] }}</th>
+              <th>{{ i[5] }}</th>
+              <th>{{ '+' if i[6] == 1 else '-' }}</th>
+              <th>{{ i[7] }}</th>
+              <th><button class="btn btn-primary btn-custom-border text-uppercase" onclick="openForm('{{i[0]}}')">Complete </button></th>
+            </tr>
+            {% endfor %}
+          </table>
+          <p></p>
+          <h2 style="font-weight: bold;" class="text-center">REQUESTS COMPLETED</h3>
+          <table width= "85%">
+            <tr>
+              <th>Request ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Phone Number</th>
+              <th>Aadhar Number</th>
+              <th>Blood Group</th>
+              <th>Blood Polarity</th>
+              <th>Issue</th>
+              <th>Donor ID</th>
+              <th>Donor Name</th>
+            </tr>
+            {% for i in requests["completed"] %}
+            <tr>
+              <th>{{ i[0] }}</th>
+              <th>{{ i[1] }}</th>
+              <th>{{ i[2] }}</th>
+              <th>{{ i[3] }}</th>
+              <th>{{ i[4] }}</th>
+              <th>{{ i[5] }}</th>
+              <th>{{ '+' if i[6] == 1 else '-' }}</th>
+              <th>{{ i[7] }}</th>
+              <th>{{ i[8] }}</th>
+              <th>{{ i[9] }}</th>
+            </tr>
+            {% endfor %}
+          </table>
+          
+          <div class="form-popup" id="myForm">
+            <form action="{{ url_for('view_request') }}" method="POST" class="form-container">
+              <h1>MARK REQUEST AS COMPLETED</h1>
+              <label for="request_id">Request Id</label>
+              <input type="text" id="find-user" name="request_id" readonly required>
+              <label for="donor">Select Donor</label>
+              <select name="donor" id="donor" required>
+                <option value="" selected hidden disabled>Select a Donor</option>
+                {% for donor in requests['donors']%}
+                <option value="{{donor[0]}}">{{ donor[0] }} - {{ donor[1] }} {{ donor[2] }}</option>
+                {% endfor %}
+              </select>
 
-            <button type="submit" class="btn">Complete</button>
-            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-          </form>
-          <div class="modal-bg"></div>
-        </div>
-        
-        <script>
-        function openForm(parameter) {
-          console.log(parameter);
-          document.getElementById("myForm").style.display = "block";
-          document.getElementById("find-user").value = parameter;
-        }
-        
-        function closeForm() {
-          document.getElementById("myForm").style.display = "none";
-          document.getElementById("hospital").value = "";
-          document.getElementById("donor").value = "";
-        }
-        </script>
+              <button type="submit" class="btn">Complete</button>
+              <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </form>
+            <div class="modal-bg"></div>
+          </div>
+          
+          <p></p>
+          <div class="col-xs-12 col-sm-6">
+            <div class="input-field button">
+                <span class="btn-border">
+                    <a href="{{ url_for('index')}}"><button type="Go to Home Page" class="btn btn-primary btn-custom-border text-uppercase">Go to Home Page</button></a>
+                </span>
+            </div>
+          </div>
+
+          <script>
+          function openForm(parameter) {
+            console.log(parameter);
+            document.getElementById("myForm").style.display = "block";
+            document.getElementById("find-user").value = parameter;
+          }
+          
+          function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+            document.getElementById("hospital").value = "";
+            document.getElementById("donor").value = "";
+          }
+          </script>
+        </main>
 </body>
 </html>

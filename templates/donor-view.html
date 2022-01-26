@@ -4,18 +4,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Blood bank Management system</title>
+    <link rel="shortcut icon" href="https://cdn-icons.flaticon.com/png/128/603/premium/603227.png?token=exp=1642354175~hmac=6ebcfaf769c98b04a662e7aa3e48af82"/>
     <!-- <link rel="stylesheet" href="static/form.css"> -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i|Open+Sans:400,600,700,800" rel="stylesheet">
+    <link rel="stylesheet" href="/static/themefisher-fonts.min.css">
+    <link rel="stylesheet" href="/static/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/main.css">
+    <link id="color-changer" rel="stylesheet" href="/static/color-0.css">
 </head>
 <body>
     <style>
         
         * {
-            font-family: 'Source Sans Pro', sans-serif;
-            background-color: #292929;
-            color: white;
+            font-family: 'Open Sans Pro', sans-serif;
+            background-color: white;
+            color: black;
             text-transform: uppercase;
             box-sizing: border-box;
         }
@@ -26,7 +32,11 @@
         }
 
         table, th, td {
-            border: 1px solid rgb(119, 106, 106);
+            font-family: "Source Sans", sans-serif;
+            border: 3px solid black;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         /* Button used to open the contact form - fixed at the bottom of the page */
@@ -129,55 +139,81 @@
         </style>
         </head>
         <body>
-        
-        <h2>VERIFIED DONORS</h2>
-        <!-- <h3>REQUESTS BEING PROCESSED</h3> -->
-        <table>
-          <tr>
-            <th>Donor Verification ID</th>
-            <th>First Name  </th>
-            <th>Last Name</th>
-            <th>Aadhar Number</th>
-            <th>Remove Donor</th>
-          </tr>
-          {% for i in requests["verified"] %}
-          <tr>
-            <th>{{ i[0] }}</th>
-            <th>{{ i[1] }}</th>
-            <th>{{ i[2] }}</th>
-            <th>{{ i[3] }}</th>
-            <th><button class="open-button" onclick="openForm('{{i[0]}}')">Remove</button></th>
-          </tr>
-          {% endfor %}
-        </table>
+        <main class="site-wrapper">
+          <p></p>
+          <div class="row">
+            <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                <div class="page-title text-center ">
+                    <h2><span class="primary">VERIFIED DONORS</span></h2>
+                    <!-- <p style="color :rgb(236, 154, 60); ">Blood donation is the most important social service to humankind. By donating we can give others a life support. Blood Donation&nbsp;at the right time can save millions of lifes all over the world every year. Join us in this noble service in saving lifes. Register yourself below!!</p> -->
+                </div>
+            </div>
+          </div>
+            <table width = "75%">
+              <tr>
+                <th>Donor Verification ID</th>
+                <th>First Name  </th>
+                <th>Last Name</th>
+                <th>Aadhar Number</th>
+                <th>Remove Donor</th>
+              </tr>
+              {% for i in requests["verified"] %}
+              <tr>
+                <th>{{ i[0] }}</th>
+                <th>{{ i[1] }}</th>
+                <th>{{ i[2] }}</th>
+                <th>{{ i[3] }}</th>
+                <th><button class="btn btn-primary btn-custom-border text-uppercase" onclick="openForm('{{i[0]}}')">Remove</button></th>
+              </tr>
+              {% endfor %}
+            </table>
+          <!-- </div> -->
+          
+          <div class="form-popup" id="myForm">
+            <form action="{{ url_for('view_donor') }}" method="POST" class="form-container">
+              <h1>REMOVE DONOR</h1>
 
-        
-        <div class="form-popup" id="myForm">
-          <form action="{{ url_for('view_donor') }}" method="POST" class="form-container">
-            <h1>REMOVE DONOR</h1>
+              <label for="donor_id">Donor Id</label>
+              <input type="text" id="find-user" name="donor_id" readonly required>
 
-            <label for="donor_id">Donor Id</label>
-            <input type="text" id="find-user" name="donor_id" readonly required>
+              <button type="submit" class="btn cancel">Remove Donor</button>
+              <button type="button" class="btn" onclick="closeForm()">Close</button>
 
-            <button type="submit" class="btn cancel">Remove Donor</button>
-            <button type="button" class="btn" onclick="closeForm()">Close</button>
-
-          </form>
-          <div class="modal-bg"></div>
-        </div>
+            </form>
+            <div class="modal-bg"></div>
+          </div>
+          <p></p>
+          <div class="col-xs-12 col-sm-6">
+            <div class="input-field button">
+                <span class="btn-border">
+                    <a href="{{ url_for('index')}}"><button type="Go to Home Page" class="btn btn-primary btn-custom-border text-uppercase">Go to Home Page</button></a>
+                </span>
+            </div>
+          </div> <!-- ./col- -->
         
-        <script>
-        function openForm(parameter) {
-          console.log(parameter);
-          document.getElementById("myForm").style.display = "block";
-          document.getElementById("find-user").value = parameter;
-        }
-        
-        function closeForm() {
-          document.getElementById("myForm").style.display = "none";
-          document.getElementById("hospital").value = "";
-          document.getElementById("donor").value = "";
-        }
-        </script>
+        <!-- <p></p> -->
+        <!-- <nav class="page-nav clear">
+            <div class="container">
+                <div class="flex flex-middle space-between">
+                    <span class="copyright hidden-xs">Copyright &copy; 2022 PSG TECH RESERVED.</span>
+                </div>
+            </div>
+             /.page-nav
+        </nav> -->
+          <script>
+          function openForm(parameter) {
+            console.log(parameter);
+            document.getElementById("myForm").style.display = "block";
+            document.getElementById("find-user").value = parameter;
+          }
+          
+          function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+            document.getElementById("hospital").value = "";
+            document.getElementById("donor").value = "";
+          }
+          </script>
+          
+        </main>
 </body>
 </html>
