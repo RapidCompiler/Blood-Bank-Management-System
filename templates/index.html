@@ -239,15 +239,15 @@
     
             {% if session.get('doctor_logged_in', None) %}
             <div class="btn-doctor_login">
-                <a href='{{ url_for("view_donor", user = "doctor") }}'><button class="btn btn-primary btn-custom-border text-uppercase">View all Donors</button></a>
-                <a href='{{ url_for("verification", user = "doctor") }}'><button class="btn btn-primary btn-custom-border text-uppercase">Verify Donors</button></a>
+                <a href='/view_donor/doctor'><button class="btn btn-primary btn-custom-border text-uppercase">View all Donors</button></a>
+                <a href='/verification/doctor'><button class="btn btn-primary btn-custom-border text-uppercase">Verify Donors</button></a>
             </div>
             {% endif %}
     
             {% if session.get('hospital_logged_in', None) %}
             <div class="btn-doctor_login">
-                <a href="{{ url_for('view_request') }}"><button class="btn btn-primary btn-custom-border text-uppercase">View all Requests</button></a>
-                <a href='{{ url_for("verification", user = "hospital") }}'><button class="btn btn-primary btn-custom-border text-uppercase">Verify Recipients</button></a>
+                <a href="/view_request/hospital"><button class="btn btn-primary btn-custom-border text-uppercase">View all Requests</button></a>
+                <a href='/verification/hospital'><button class="btn btn-primary btn-custom-border text-uppercase">Verify Recipients</button></a>
             </div>
             {% endif %}
         </main> <!-- /.site-wrapper -->

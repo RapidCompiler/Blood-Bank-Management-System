@@ -219,7 +219,7 @@
               <select name="donor" id="donor" required>
                 <option value="" selected hidden disabled>Select a Donor</option>
                 {% for donor in requests['donors']%}
-                <option value="{{donor[0]}}">{{ donor[0] }} - {{ donor[1] }} {{ donor[2] }}</option>
+                <option value="{{donor[0]}}">{{ donor[3] }}{{ "+" if donor[4] == '1' else "-" }} - {{ donor[1] }} {{ donor[2] }}</option>
                 {% endfor %}
               </select>
 

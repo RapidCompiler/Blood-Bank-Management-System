@@ -50,8 +50,9 @@
 
                                     <!-- {% for i in requests["vid"] %}
                                     {% endfor %} -->
-                                    <h2 style="color:rgb(0, 142, 236); font-family:'Courier New', Courier, monospace"> Verification ID: {{requests}}</h2>
-
+                                    {% if requests %}
+                                        <h2 style="color:rgb(0, 142, 236); font-family:'Courier New', Courier, monospace"> Verification ID: {{ requests }}</h2>
+                                    {% endif %}
                                     <p style="color :rgb(236, 154, 60); ">"Every blood donor is an asset to the nation who saves the lives of people and you’re one of them. Thank you for your regular contribution to our blood donation drive. We appreciate your efforts. Thank you."</p>
                                     <a href="{{ url_for('index') }}"><button class="btn btn-primary btn-custom-border text-uppercase text-center">Go to Home Page</button></a>
                                 </div>

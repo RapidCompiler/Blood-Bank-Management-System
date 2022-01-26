@@ -46,7 +46,7 @@ def index(user = None):
         elif session.get('hospital_logged_in', None):
             user = "hospital"
 
-    restrictedViewCheck(user, 'index')
+    user = restrictedViewCheck(user, 'index')
 
     session.pop("error", None)
 
@@ -71,13 +71,17 @@ def sendSMS(body, phone):
     print("Message sent", phone, body)
 
 def restrictedViewCheck(user, endpoint):
-    print("inside restricted view method")
     if (user == "hospital" and session.get('doctor_logged_in', None)) or (user == "doctor" and session.get('hospital_logged_in', None)):
-        print(user)
         if user == "doctor":
-            return redirect(url_for(f'{endpoint}', user='hospital'))
-        print("redirecting to doctor profile", endpoint)
-        return redirect(url_for(f'{endpoint}', user='doctor'))
+            return "hospital"
+        return "doctor"
+
+    if user not in ["doctor", "hospital"]:
+        if session.get('doctor_logged_in', None):
+            return "doctor"
+        return "hospital"
+
+    return user
 
 
 @app.route('/donate', methods=['GET'])
@@ -99,8 +103,11 @@ def ask():
     return render_template('request.html',message={'hosp_list':hosp_list,'local':local,'city':city, 'error': error})
 
     
-@app.route('/view_request', methods=["GET", "POST"])
+@app.route('/view_request/hospital', methods=["GET", "POST"])
 def view_request():
+    user = restrictedViewCheck('hospital', 'view_donor')
+    if user == "doctor":
+        return redirect('/')
     
     if request.method == "POST":
         # query to change the status of request to COMPLETED
@@ -122,7 +129,7 @@ def view_request():
     completed = cursor.fetchall()
     print(completed)
  
-    query = f"select donor.id, first_name, last_name from donor left join donor_verification on donor.v_id=donor_verification.v_id"
+    query = f"select donor.id, first_name, last_name, blood_group, blood_polarity from donor left join donor_verification on donor.v_id=donor_verification.v_id"
     cursor.execute(query)
     donors = cursor.fetchall()
 
@@ -131,8 +138,12 @@ def view_request():
     return render_template('request-view.html', requests=requests)
 
 
-@app.route('/view_donor', methods=["GET", "POST"])
+@app.route('/view_donor/doctor', methods=["GET", "POST"])
 def view_donor():
+    user = restrictedViewCheck('doctor', 'view_donor')
+    if user == "hospital":
+        return redirect('/')
+
     if request.method == "POST":
         # delete from donor_verification and donor tables
         query = f"delete from donor where v_id = '{request.form.get('donor_id')}'"
@@ -233,7 +244,7 @@ def req_process():
     else:
         session["error"] = "Recepient not found"
         return redirect('/request')
-    return render_template('success.html')
+    return render_template('success.html', requests = {})
 
 
 @app.route('/donate_success', methods=["POST"])
@@ -306,13 +317,11 @@ def donate_success():
         message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood in the hospital "+ hosp_name + " at " + hosp_locality +"."
         sendSMS(message, phone)
 
-    return render_template('success.html')
+    return render_template('success.html', requests = {})
 
 
 @app.route('/verification/<user>', methods=["POST", "GET"])
 def verification(user):
-    restrictedViewCheck(user, 'verification')
-    print(user, len(user))
 
     if request.method == "POST":
         userType = "doctor" if user == "donor" else "hospital"
@@ -333,22 +342,19 @@ def verification(user):
 
         return render_template('success.html', requests=requests)
 
-    user = "donor" if user == "doctor" else "recipient"
+    user = restrictedViewCheck(user, 'verification')
+    user = "donor" if user == "doctor" else "request"
     if session.get("doctor_logged_in", None) or session.get('hospital_logged_in', None):
         return render_template('verification.html', message={"user": user})
     else:
         print("inside donor_verification function")
-        return redirect('login/doctor')
+        return redirect('/')
 
 
 @app.route('/profile/<user>')
 def profile(user):
-    restrictedViewCheck(user, 'profile')
+    user = restrictedViewCheck(user, 'profile')
     print(user, session.get('doctor_logged_in', None), session.get('hospital_logged_in', None))
-    if (user == "hospital" and session.get('doctor_logged_in', None)) or (user == "doctor" and session.get('hospital_logged_in', None)):
-        if user == "doctor":
-            return redirect(url_for('profile', user='hospital'))
-        return redirect(url_for('profile', user='doctor'))
 
     if session.get(f"{user}_logged_in", None):
         query = f"select * from {user}_table where id = '{session.get(f'{user}_id', None)}'"
@@ -377,15 +383,16 @@ def profile(user):
 
 @app.route('/login/<user>', methods=["GET"])
 def login_page(user):
-    restrictedViewCheck(user, 'login_page')
+    user = restrictedViewCheck(user, 'login_page')
     if not session.get(f'{user}_logged_in', None):
         error = session.get(f'{user}_login_error', "")
         return render_template(f'{user}-login.html', message={"error": error})
     else:
-        return redirect(f'/profile/{user}')
+        return redirect(f'/{user}')
 
 @app.route('/login/<user>', methods=["POST"])
 def login(user):
+    user = restrictedViewCheck(user, 'login')
     userid = request.form.get("userid")
     password = request.form.get("password")
     query = f"select * from {user}_table where id = '{userid}'"
@@ -412,6 +419,7 @@ def login(user):
 
 @app.route('/logout/<user>', methods=["POST"])
 def logout(user):
+    user = restrictedViewCheck(user, 'logout')
     print('logging out')
     print(session.get('hospital_logged_in', None), session.get('hospital_id', None), session.get('hospital_name', None))
     session.pop(f'{user}_logged_in', None)
