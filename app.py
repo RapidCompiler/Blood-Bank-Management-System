@@ -325,7 +325,7 @@ def verification(user):
         requests = vid[0]
         return render_template('success.html', requests=requests)
 
-    user = "donor" if user == "doctor" else "request"
+    user = "donor" if user == "doctor" else "recipient"
     if session.get("doctor_logged_in", None) or session.get('hospital_logged_in', None):
         return render_template('verification.html', message={"user": user})
     else:
