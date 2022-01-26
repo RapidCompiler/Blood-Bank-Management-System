@@ -46,10 +46,7 @@ def index(user = None):
         elif session.get('hospital_logged_in', None):
             user = "hospital"
 
-    if (user == "hospital" and session.get('doctor_logged_in', None)) or (user == "doctor" and session.get('hospital_logged_in', None)):
-        if user == "doctor":
-            return redirect(url_for('index', user='hospital'))
-        return redirect(url_for('index', user='doctor'))
+    restrictedViewCheck(user, 'index')
 
     session.pop("error", None)
 
@@ -72,6 +69,15 @@ def sendSMS(body, phone):
         to = phone
     )
     print("Message sent", phone, body)
+
+def restrictedViewCheck(user, endpoint):
+    print("inside restricted view method")
+    if (user == "hospital" and session.get('doctor_logged_in', None)) or (user == "doctor" and session.get('hospital_logged_in', None)):
+        print(user)
+        if user == "doctor":
+            return redirect(url_for(f'{endpoint}', user='hospital'))
+        print("redirecting to doctor profile", endpoint)
+        return redirect(url_for(f'{endpoint}', user='doctor'))
 
 
 @app.route('/donate', methods=['GET'])
@@ -305,6 +311,7 @@ def donate_success():
 
 @app.route('/verification/<user>', methods=["POST", "GET"])
 def verification(user):
+    restrictedViewCheck(user, 'verification')
     print(user, len(user))
 
     if request.method == "POST":
@@ -323,6 +330,7 @@ def verification(user):
         cursor.execute(query)
         vid = cursor.fetchone()
         requests = vid[0]
+
         return render_template('success.html', requests=requests)
 
     user = "donor" if user == "doctor" else "recipient"
@@ -335,6 +343,7 @@ def verification(user):
 
 @app.route('/profile/<user>')
 def profile(user):
+    restrictedViewCheck(user, 'profile')
     print(user, session.get('doctor_logged_in', None), session.get('hospital_logged_in', None))
     if (user == "hospital" and session.get('doctor_logged_in', None)) or (user == "doctor" and session.get('hospital_logged_in', None)):
         if user == "doctor":
@@ -368,6 +377,7 @@ def profile(user):
 
 @app.route('/login/<user>', methods=["GET"])
 def login_page(user):
+    restrictedViewCheck(user, 'login_page')
     if not session.get(f'{user}_logged_in', None):
         error = session.get(f'{user}_login_error', "")
         return render_template(f'{user}-login.html', message={"error": error})
