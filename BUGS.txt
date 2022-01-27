@@ -1,0 +1,8 @@
+1. Donor not found message displaying in donor page is not neat.
+2. Able to select "Please select your locality" as a value in donor page.
+3. The table in View requests page is not showing any data.
+4. when i changed the password in database, i couldn't login in hospital
+5. when there is a pending request and I add an appropriate donor, i get error related to hospital table.
+6. Got some error in populating Hospital Table
+7. Display the data entered in the textbix in caps
+ 

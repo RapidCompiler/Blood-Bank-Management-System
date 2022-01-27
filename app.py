@@ -219,8 +219,9 @@ def req_process():
             # Code to iterate through database results and send SMS to all prospective donors (in the same location)
             for i in x:
                 phone = "+91" + i[0]
+                print(request.form.get("blood_polarity"))
+                blood_polarity = "+" if (request.form.get("blood_polarity")=="plus") else "-"
                 print(phone, blood_polarity)
-                blood_polarity = "+" if request.form.get("blood_polarity") else "-"
                 message = "A patient is in need of " + request.form.get('blood_group').upper() + blood_polarity + " blood at "+ hosp_name + " hospital in " + hosp_locality +"."
                 sendSMS(message, phone)
 
@@ -414,6 +415,7 @@ def login(user):
             return redirect(f'/{user}')
         else:
             session[f"{user}_login_error"] = "User ID & Password combination does not exist"
+            print("Else part")
             return redirect(f'/login/{user}')
 
 

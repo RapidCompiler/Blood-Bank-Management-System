@@ -53,14 +53,14 @@
                             <div class="col-xs-12 col-sm-6">
                                 <div class="input-field name">
                                     <span class="input-icon" id="first_name" ><i class="tf-ion-android-person"></i></span>
-                                    <input type="text" class="form-control"  name = "first_name" placeholder="Enter your First Name">
+                                    <input type="text" class="form-control text-uppercase"  name = "first_name" placeholder="Enter your First Name">
                                 </div>
                             </div> <!-- ./col- -->
 
                             <div class="col-xs-12 col-sm-6">
                                 <div class="input-field email">
                                     <span class= "input-icon" id="last_name"><i class="tf-ion-android-person"></i></span>
-                                    <input type="text" class="form-control" name="last_name" placeholder="Enter your Last Name">
+                                    <input type="text" class="form-control text-uppercase" name="last_name" placeholder="Enter your Last Name">
                                 </div>
                             </div> <!-- ./col- -->
 
@@ -69,8 +69,8 @@
                             <div class="combo col-xs-12 col-sm-6">
                                 <div class="input-field name">
                                     <span class= "input-icon" id="sex"><i class="tf-ion-female"></i></span>
-                                    <select name="sex" id="sex" required>
-                                        <option value="" selected>Please select Your Gender</option>
+                                    <select class = "text-uppercase" name="sex" id="sex" required>
+                                        <option selected disabled>Please select Your Gender</option>
                                         <option value="male">male</option>
                                         <option value="female">female</option>
                                         <option value="other">other</option>
@@ -83,8 +83,8 @@
                                     <!-- <span class="input-icon" id="city" ><i class="tf-ion-ios-home"></i></span>
                                     <input type="text" class="form-control"  name = "city" placeholder="Enter your City"> -->
                                     <span class= "input-icon" id="city"><i class="tf-ion-ios-home"></i></span>
-                                    <select name="city" id="city" required>
-                                        <option selected="selected">Select a City</option>
+                                    <select class = "text-uppercase" name="city" id="city" required>
+                                        <option selected disabled>Select a City</option>
                                         {% for city in message['city']%}
                                         <option value="{{city}}">{{city}}</option>
                                         {% endfor %}
@@ -95,8 +95,8 @@
                             <div class="combo phone     col-xs-12 col-sm-6">
                                 <div class="input-field name">
                                     <span class= "input-icon" id="blood_group"><i class="tf-streetsign"></i></span>
-                                    <select name="locality" id="locality">
-                                        <option value="" selected="selected">Select a Locality</option>
+                                    <select class = "text-uppercase" name="locality" id="locality">
+                                        <option selected disabled>Select a Locality</option>
                                         {% for local in message['local']%}
                                         <option value="{{local[0]}}">{{ local[0] }} - {{ local[1] }}</option>
                                         {% endfor %}
@@ -107,14 +107,14 @@
                             <div class="phone col-xs-12 col-sm-6">
                                 <div class="input-field">
                                     <span class= "input-icon" id="phone"><i class="tf-ion-android-phone-portrait"></i></span>
-                                    <input type="number" class="form-control" name="phone" placeholder="Enter your Phone number" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)">
+                                    <input type="number" class="form-control text-uppercase" name="phone" placeholder="Enter your Phone number" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)">
                                 </div>
                             </div> <!-- ./col- -->
 
                             <div class="phone col-xs-12 col-sm-6">
                                 <div class="input-field name">
                                     <span class= "input-icon" id="aadhar"><i class="tf-ion-card"></i></span>
-                                    <input type="number" class="form-control" name="aadhar" placeholder="Enter the Aadhar number" maxlength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)">
+                                    <input type="number" class="form-control text-uppercase" name="aadhar" placeholder="Enter the Aadhar number" maxlength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)">
                                 </div>
                             </div> <!-- ./col- -->
 
@@ -122,8 +122,8 @@
                             <div class="combo aadhar col-xs-12 col-sm-6">
                                 <div class="input-field name">
                                     <span class= "input-icon" id="blood_group"><i class="tf-ion-waterdrop"></i></span>
-                                    <select name="blood_group" id="blood_group" required>
-                                        <option value="" selected>Please select Your blood group</option>
+                                    <select class = "text-uppercase" name="blood_group" id="blood_group" required>
+                                        <option value="" selected disabled>Please select Your blood group</option>
                                         <option value="A">A</option>
                                         <option value="B">B</option>
                                         <option value="AB">AB</option>
@@ -136,8 +136,8 @@
                             <div class="combo verify col-xs-12 col-sm-6">
                                 <div class="input-field name">
                                     <span class= "input-icon" id="blood_polarity"><i class="tf-ion-waterdrop"></i></span>
-                                    <select name="blood_polarity" id="blood_polarity" required>
-                                        <option value="" selected>Please select Your blood group polarity</option>
+                                    <select class = "text-uppercase" name="blood_polarity" id="blood_polarity" required>
+                                        <option value="" selected disabled>Please select Your blood group polarity</option>
                                         <option value="plus">+</option>
                                         <option value="minus">-</option>
                                     </select>
@@ -148,7 +148,7 @@
                                     <span class= "input-icon" id="v_id"><i class="tf-ion-card"></i></span>
                                     <!-- <select name="v_id" id="v_id" required> -->
                                         <!-- <option value="" selected>Enter verification Number</option> -->
-                                        <input type="number" class="form-control" name="v_id" placeholder="verification ID">
+                                        <input type="number" class="form-control text-uppercase" name="v_id" placeholder="verification ID">
                                     <!-- </select> -->
                                 </div>  
                             </div>
