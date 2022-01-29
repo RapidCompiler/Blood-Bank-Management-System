@@ -18,13 +18,14 @@
     <style type=text/css>
         p {
             background-color: gray;
-            margin: 10px;
+            /* margin: auto; */
         }
           
         div {
             color: white;
             background-color: 009900;
-            margin: 2px;
+            margin: auto;
+            /* margin-left: auto; */
             font-size: 25px;
         }
           
@@ -34,11 +35,9 @@
     </style>
     <!-- end of online code -->
 
-
 </head>
 <body>
     <main class="site-wrapper">
-    <!-- <title>Verify {{ message['user'] }}</title> -->
         <div class="pt-table">
             <div class="pt-tablecell page-resume relative">
 
@@ -53,22 +52,22 @@
                 <!-- <h2>Verify {{ message['user'] }}s</h2> -->
                 <h3>Please enter the following details</h3>
                 <form id="contact-form" class="row contact-form no-gutter" action='{{ url_for("verification", user = message["user"]) }}' method="POST">
-                    <div class="col-xs-12 col-sm-5">
-                        <div class="input-field phone">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="input-field verify_req">
                             <span class="input-icon" id="first_name" ><i class="tf-ion-android-person"></i></span>
                             <input type="text" class="form-control"  name = "first_name" placeholder="Enter your First Name">
                         </div>
                     </div> <!-- ./col- -->
 
                     <div class="col-xs-12 col-sm-5">
-                        <div class="input-field phone">
+                        <div class="input-field name">
                             <span class= "input-icon" id="last_name"><i class="tf-ion-android-person"></i></span>
                             <input type="text" class="form-control" name="last_name" placeholder="Enter your Last Name">
                         </div>
                     </div> <!-- ./col- -->
 
                     <div class="col-xs-12 col-sm-5">
-                        <div class="input-field phone">
+                        <div class="input-field name">
                             <span class= "input-icon" id="phone"><i class="tf-ion-android-phone-portrait"></i></span>
                             <input type="number" class="form-control" name="aadhar" placeholder="Enter your Aadhar number" maxlength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0,this.maxLength)">
                         </div>
@@ -81,8 +80,8 @@
                     {% endif %}
 
 
-                    <div class="btn-doctor_login col-xs-12 col-sm-12">
-                        <div class="input-field">
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="input-field button">
                             <span class="btn-border">
                                 <button type="submit" class="btn btn-primary btn-custom-border text-uppercase">SUBMIT</button>
                             </span>
