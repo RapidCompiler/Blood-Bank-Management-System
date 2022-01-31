@@ -309,7 +309,7 @@ def donate_success():
     if x != None:
         phone = "+91" + request.form.get('phone')
         print(phone, blood_polarity)
-        blood_polarity = "+" if request.form.get("blood_polarity") else "-"
+        blood_polarity = "+" if request.form.get("blood_polarity") == "plus" else "-"
         query=f"select hospital_table.hosp_name, locality.locality_name from hospital_table left join locality on hospital_table.hosp_locality = locality.id where hospital_table.id = {x[0]};"
         cursor.execute(query)
         hosp_details=cursor.fetchone()
