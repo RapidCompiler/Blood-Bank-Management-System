@@ -231,7 +231,7 @@ def req_process():
             blood_sign = "+" if request.form.get("blood_polarity") == "plus" else "-"
             blood_polarity = 1 if request.form.get("blood_polarity") == "plus" else 0
             print("This is the blood_polarity : ", request.form.get('blood_polarity'))
-            query = f"select phone from donor left join locality on donor.locality_id=locality.id left join city on locality.c_id = {hosp_city_id} where blood_group = '{request.form.get('blood_group')}' and blood_polarity = {blood_polarity};"
+            query = f"select phone from donor left join locality on donor.locality_id=locality.id left join city on locality.c_id = city.id where blood_group = '{request.form.get('blood_group')}' and blood_polarity = {blood_polarity} and city.id={hosp_city_id};"
             print(query)
             cursor.execute(query)
             results = cursor.fetchall()
