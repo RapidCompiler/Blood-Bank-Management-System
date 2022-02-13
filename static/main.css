@@ -210,13 +210,6 @@ button, input, select,
 textarea, label {
   font-weight: 400; }
 
-.top_margin{
-  margin-top: 15px;
-  position: relative;
-  margin-left: 0px;
-  margin-bottom: 20px;
-}
-
 .btn {
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
@@ -248,6 +241,16 @@ textarea, label {
   position: absolute;
   margin-left: 500px;
  }
+ .btn-donate_submit{
+  margin-top: 10px;
+  position:relative;
+  margin-left: 480px;
+ }
+ .btn-donate_home{
+  margin-top: 10px;
+  position:relative;
+  margin-left: 450px;
+ }
  .btn-doctor_login{
    margin-top: 30px;
    position:relative;
@@ -258,6 +261,13 @@ textarea, label {
   margin-top: 30px;
   position:relative;
   margin-left: 520px;
+  /* text-align-last: center; */
+}
+
+.btn-profile{
+  margin-top: 30px;
+  position:relative;
+  margin-left: 630px;
   /* text-align-last: center; */
 }
 
@@ -487,7 +497,7 @@ textarea, label {
   background-size: cover;
   vertical-align: middle; }
   .page-home .overlay {
-    background-color: rgba(255, 255, 255, 0.93); }
+    background-color: rgba(233, 233, 233, 0.705); }
 
 /* End of container */
 .hexagon-item {
